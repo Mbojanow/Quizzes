@@ -1,4 +1,4 @@
-package com.bocian.quizes;
+package com.bocian.quizzes;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

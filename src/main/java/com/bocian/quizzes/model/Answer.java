@@ -1,10 +1,10 @@
-package com.bocian.quizes.model;
+package com.bocian.quizzes.model;
 
 import lombok.*;
 
 import javax.persistence.*;
 
-import static com.bocian.quizes.model.Answer.ANSWER_TABLE_NAME;
+import static com.bocian.quizzes.model.Answer.ANSWER_TABLE_NAME;
 
 @EqualsAndHashCode(callSuper = true, exclude = "question")
 @ToString(of = {"description", "isCorrect"})

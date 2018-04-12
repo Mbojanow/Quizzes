@@ -1,4 +1,4 @@
-package com.bocian.quizes.model;
+package com.bocian.quizzes.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

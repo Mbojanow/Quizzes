@@ -1,6 +1,6 @@
-package com.bocian.quizes.repositories;
+package com.bocian.quizzes.repositories;
 
-import com.bocian.quizes.model.Product;
+import com.bocian.quizzes.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {

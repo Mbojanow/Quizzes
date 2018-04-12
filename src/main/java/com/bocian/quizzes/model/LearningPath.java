@@ -1,4 +1,4 @@
-package com.bocian.quizes.model;
+package com.bocian.quizzes.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-import static com.bocian.quizes.model.LearningPath.LEARNING_PATH_TABLE_NAME;
+import static com.bocian.quizzes.model.LearningPath.LEARNING_PATH_TABLE_NAME;
 
 @EqualsAndHashCode(callSuper = true)
 @Data

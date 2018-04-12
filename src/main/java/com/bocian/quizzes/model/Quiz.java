@@ -1,4 +1,4 @@
-package com.bocian.quizes.model;
+package com.bocian.quizzes.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.Set;
 
-import static com.bocian.quizes.model.Quiz.QUIZ_TABLE_NAME;
+import static com.bocian.quizzes.model.Quiz.QUIZ_TABLE_NAME;
 
 @EqualsAndHashCode(callSuper = true)
 @Data

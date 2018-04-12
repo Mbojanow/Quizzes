@@ -1,4 +1,4 @@
-package com.bocian.quizes.model;
+package com.bocian.quizzes.model;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import static com.bocian.quizes.model.Product.PRODUCT_TABLE_NAME;
+import static com.bocian.quizzes.model.Product.PRODUCT_TABLE_NAME;
 
 @EqualsAndHashCode(callSuper = true)
 @Data

@@ -1,7 +1,7 @@
-package com.bocian.quizes.model;
+package com.bocian.quizzes.model;
 
-import com.bocian.quizes.common.Difficulty;
-import com.bocian.quizes.common.QuestionType;
+import com.bocian.quizzes.common.Difficulty;
+import com.bocian.quizzes.common.QuestionType;
 import lombok.*;
 
 import javax.persistence.*;
@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.bocian.quizes.model.Question.QUESTION_TABLE_NAME;
+import static com.bocian.quizzes.model.Question.QUESTION_TABLE_NAME;
 
 @EqualsAndHashCode(callSuper = true, exclude = "answers")
 @Entity

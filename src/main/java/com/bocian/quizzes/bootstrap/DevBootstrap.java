@@ -1,14 +1,14 @@
-package com.bocian.quizes.bootstrap;
+package com.bocian.quizzes.bootstrap;
 
-import com.bocian.quizes.common.Difficulty;
-import com.bocian.quizes.common.QuestionType;
-import com.bocian.quizes.configuration.Profiles;
-import com.bocian.quizes.model.Answer;
-import com.bocian.quizes.model.Product;
-import com.bocian.quizes.model.Question;
-import com.bocian.quizes.repositories.AnswerRepository;
-import com.bocian.quizes.repositories.ProductRepository;
-import com.bocian.quizes.repositories.QuestionRepository;
+import com.bocian.quizzes.common.Difficulty;
+import com.bocian.quizzes.common.QuestionType;
+import com.bocian.quizzes.configuration.Profiles;
+import com.bocian.quizzes.model.Answer;
+import com.bocian.quizzes.model.Product;
+import com.bocian.quizzes.model.Question;
+import com.bocian.quizzes.repositories.AnswerRepository;
+import com.bocian.quizzes.repositories.ProductRepository;
+import com.bocian.quizzes.repositories.QuestionRepository;
 import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
@@ -43,7 +43,7 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
         saveProducts();
         saveCppQuestionsAndAnswers();
 
-        //questionRepository.findByIdWithAnswers(7L).getAnswers().forEach(System.out::println);
+        //questionRepository.findByIdWithAnswers(7L).get().getAnswers().forEach(System.out::println);
     }
 
     private void saveProducts() {

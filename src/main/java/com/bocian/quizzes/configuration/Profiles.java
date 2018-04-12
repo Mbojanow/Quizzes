@@ -1,4 +1,4 @@
-package com.bocian.quizes.configuration;
+package com.bocian.quizzes.configuration;
 
 public interface Profiles {
     String DEVELOPMENT = "dev";
