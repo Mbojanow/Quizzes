@@ -1,7 +1,10 @@
 package com.bocian.quizzes.util;
 
 import com.bocian.quizzes.model.Answer;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AnswerFactory {
 
     public static Answer createCorrectFromNumber(final Long value) {

@@ -1,27 +1,28 @@
 package com.bocian.quizzes.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.bocian.quizzes.model.LearningPath.LEARNING_PATH_TABLE_NAME;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = LEARNING_PATH_TABLE_NAME)
+@Builder
 public class LearningPath extends BaseEntity {
 
     public static final String LEARNING_PATH_TABLE_NAME = "LEARNING_PATH";
-    public static final String PRODUCT_FIELD_NAME = "product";
 
     @Column(name = "TITLE", unique = true, nullable = false)
     private String title;
 
-    @OneToOne
-    @JoinColumn(name = "PRODUCT_ID", referencedColumnName = BaseEntity.ID_COLUMN_NAME)
-    private Product product;
+    @OneToMany(mappedBy = Quiz.LEARNING_PATH_FIELD_NAME, fetch = FetchType.LAZY)
+    private List<Quiz> quizzes = new ArrayList<>();
 }

@@ -2,10 +2,10 @@ package com.bocian.quizzes.model;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.bocian.quizzes.model.Product.PRODUCT_TABLE_NAME;
 
@@ -26,6 +26,6 @@ public class Product extends BaseEntity {
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @OneToOne(mappedBy = LearningPath.PRODUCT_FIELD_NAME)
-    private LearningPath learningPath;
+    @ManyToMany(mappedBy = Quiz.PRODUCTS_FIELD_NAME, fetch = FetchType.LAZY)
+    private List<Quiz> quizzes = new ArrayList<>();
 }

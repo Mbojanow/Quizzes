@@ -12,16 +12,18 @@ public class InitialDataLoaderTest {
     private DataLoader loaderB = mock(DataLoader.class);
     private DataLoader loaderC = mock(DataLoader.class);
     private DataLoader loaderD = mock(DataLoader.class);
+    private DataLoader loaderE = mock(DataLoader.class);
     private ContextRefreshedEvent contextRefreshedEvent = mock(ContextRefreshedEvent.class);
 
     @Test
     public void shouldCallSaveOnAllLoadersOnApplicationEvent() {
-        final InitialDataLoader initialDataLoader = new InitialDataLoader(loaderA, loaderB, loaderC, loaderD);
+        final InitialDataLoader initialDataLoader = new InitialDataLoader(loaderA, loaderB, loaderC, loaderD, loaderE);
         initialDataLoader.onApplicationEvent(contextRefreshedEvent);
         Mockito.verify(loaderA).save();
         Mockito.verify(loaderB).save();
         Mockito.verify(loaderC).save();
         Mockito.verify(loaderD).save();
+        Mockito.verify(loaderE).save();
     }
 
 }
