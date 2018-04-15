@@ -2,60 +2,38 @@ package com.bocian.quizzes.bootstrap;
 
 import com.bocian.quizzes.common.Difficulty;
 import com.bocian.quizzes.common.QuestionType;
-import com.bocian.quizzes.configuration.Profiles;
 import com.bocian.quizzes.model.Answer;
-import com.bocian.quizzes.model.Product;
 import com.bocian.quizzes.model.Question;
 import com.bocian.quizzes.repositories.AnswerRepository;
-import com.bocian.quizzes.repositories.ProductRepository;
 import com.bocian.quizzes.repositories.QuestionRepository;
 import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.annotation.Profile;
-import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 
 @Component
-@Profile(Profiles.DEVELOPMENT)
+@Qualifier("CPP")
 @Slf4j
-public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> {
+public class InitialCppRelatedDataLoader implements DataLoader {
 
-    private final ProductRepository productRepository;
+    public static final String CPP_TAG = "CPP";
+
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
 
-    public DevBootstrap(ProductRepository productRepository,
-                        QuestionRepository questionRepository,
-                        AnswerRepository answerRepository) {
-        this.productRepository = productRepository;
+    public InitialCppRelatedDataLoader(final QuestionRepository questionRepository,
+                                       final AnswerRepository answerRepository) {
         this.questionRepository = questionRepository;
         this.answerRepository = answerRepository;
     }
 
     @Override
     @Transactional
-    public void onApplicationEvent(final ContextRefreshedEvent contextRefreshedEvent) {
-        log.debug("Dev bootstrap started. Initializing database.");
-        saveProducts();
-        saveCppQuestionsAndAnswers();
-
-        //questionRepository.findByIdWithAnswers(7L).get().getAnswers().forEach(System.out::println);
-    }
-
-    private void saveProducts() {
-        final Product product1 = Product.builder().name("cpp").description("C plus plus product").build();
-        final Product product2 = Product.builder().name("java").description("Java product").build();
-
-        productRepository.save(product1);
-        productRepository.save(product2);
-        log.info("Products saved. Number of products in database: {}.", productRepository.count());
-    }
-
-    private void saveCppQuestionsAndAnswers() {
+    public void save() {
+        log.info("Saving C++ questions and answers to the database");
         saveCppFirstQuestionAndAnswers();
         saveCppSecondQuestionAndAnswers();
         saveCppThirdQuestionAndAnswers();
@@ -63,6 +41,7 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
 
     private void saveCppFirstQuestionAndAnswers() {
         final Question question1 = Question.builder()
+                .tag(CPP_TAG)
                 .type(QuestionType.MULTI_CHOICE)
                 .durationMinutes(2L)
                 .difficulty(Difficulty.EASY)
@@ -96,6 +75,7 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
 
     private void saveCppSecondQuestionAndAnswers() {
         final Question question2 = Question.builder()
+                .tag(CPP_TAG)
                 .type(QuestionType.SINGLE_CHOICE)
                 .durationMinutes(1L)
                 .difficulty(Difficulty.EASY)
@@ -120,6 +100,7 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
 
     private void saveCppThirdQuestionAndAnswers() {
         final Question question3 = Question.builder()
+                .tag(CPP_TAG)
                 .type(QuestionType.STR_ANSWER)
                 .durationMinutes(2L)
                 .difficulty(Difficulty.EASY)

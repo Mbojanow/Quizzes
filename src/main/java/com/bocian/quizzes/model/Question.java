@@ -38,6 +38,9 @@ public class Question extends BaseEntity{
     @Column(name = "DESCRIPTION", nullable = false)
     private String description;
 
+    @Column(name = "TAG")
+    private String tag;
+
     @OneToMany(mappedBy = Answer.QUESTION_FIELD_NAME, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Answer> answers = new HashSet<>();
 
