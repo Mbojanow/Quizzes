@@ -48,7 +48,7 @@ public class Question extends BaseEntity{
     @JoinColumn(name = "QUIZ_ID", referencedColumnName = BaseEntity.ID_COLUMN_NAME)
     private Quiz quiz;
 
-    public void setAnswers(Set<Answer> answers) {
+    public void setAnswers(final Set<Answer> answers) {
         // answers can be null if Question was created by lombok's builder
         createEmptyAnswersIfNull();
         answers.forEach(answer -> answer.setQuestion(this));

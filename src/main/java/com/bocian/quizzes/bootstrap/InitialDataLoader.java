@@ -25,8 +25,9 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 
     public InitialDataLoader(@Qualifier("PRODUCT") final DataLoader productDataLoader,
                              @Qualifier("CPP") final DataLoader cppDataLoader,
-                             @Qualifier("JAVA") final DataLoader javaDataLoader) {
-        loaders = Arrays.asList(productDataLoader, cppDataLoader, javaDataLoader);
+                             @Qualifier("JAVA") final DataLoader javaDataLoader,
+                             @Qualifier("QUIZ") final DataLoader quizDataLoader) {
+        loaders = Arrays.asList(productDataLoader, cppDataLoader, javaDataLoader, quizDataLoader);
     }
 
     @Override
