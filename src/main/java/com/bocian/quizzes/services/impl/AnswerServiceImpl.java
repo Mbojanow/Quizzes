@@ -24,7 +24,6 @@ public class AnswerServiceImpl implements AnswerService {
         this.answerRepository = answerRepository;
     }
 
-
     @Override
     @Transactional
     public AnswerDTO getAnswerById(final Long id) throws DbObjectNotFoundException {
@@ -43,5 +42,13 @@ public class AnswerServiceImpl implements AnswerService {
                 .stream()
                 .map(answerMapper::answerToAnswerDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public AnswerDTO createNewAnswer(final AnswerDTO answerDTO) {
+        Answer answer = answerMapper.answerDTOToAnswer(answerDTO);
+        answerRepository.save(answer);
+        return answerMapper.answerToAnswerDTO(answer);
     }
 }

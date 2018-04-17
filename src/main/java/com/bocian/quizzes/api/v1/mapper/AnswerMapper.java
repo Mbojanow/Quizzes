@@ -11,4 +11,5 @@ public interface AnswerMapper {
     AnswerMapper INSTANCE = Mappers.getMapper(AnswerMapper.class);
 
     AnswerDTO answerToAnswerDTO(Answer answer);
+    Answer answerDTOToAnswer(AnswerDTO answerDTO);
 }

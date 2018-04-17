@@ -10,4 +10,6 @@ public interface AnswerService {
     AnswerDTO getAnswerById(Long id) throws DbObjectNotFoundException;
 
     List<AnswerDTO> getAllAnswers();
+
+    AnswerDTO createNewAnswer(AnswerDTO answerDTO);
 }

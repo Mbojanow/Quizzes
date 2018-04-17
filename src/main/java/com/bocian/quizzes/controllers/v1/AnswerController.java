@@ -30,4 +30,10 @@ public class AnswerController {
     public AnswerDTO getAnswer(@PathVariable("id") final Long id) throws DbObjectNotFoundException {
         return answerService.getAnswerById(id);
     }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public AnswerDTO createNewVendor(@RequestBody AnswerDTO answerDTO) {
+        return answerService.createNewAnswer(answerDTO);
+    }
 }
