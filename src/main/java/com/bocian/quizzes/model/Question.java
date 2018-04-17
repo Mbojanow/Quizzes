@@ -18,7 +18,7 @@ import static com.bocian.quizzes.model.Question.QUESTION_TABLE_NAME;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Question extends BaseEntity{
+public class Question extends BaseEntity {
 
     public static final String QUESTION_TABLE_NAME = "QUESTION";
     public static final String QUIZ_FIELD_NAME = "quiz";
