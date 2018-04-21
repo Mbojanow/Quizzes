@@ -18,8 +18,9 @@ public class Answer extends BaseEntity {
 
     public static final String ANSWER_TABLE_NAME = "ANSWER";
     public static final String QUESTION_FIELD_NAME = "question";
+    public static final int DESCRIPTION_MAX_LENGTH = 1024;
 
-    @Column(name = "DESCRIPTION", columnDefinition = "VARCHAR(1024)", nullable = false)
+    @Column(name = "DESCRIPTION", length = DESCRIPTION_MAX_LENGTH, nullable = false)
     private String description;
 
     @Column(name = "IS_CORRECT", nullable = false)

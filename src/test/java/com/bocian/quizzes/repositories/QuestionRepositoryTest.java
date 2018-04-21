@@ -44,7 +44,7 @@ public class QuestionRepositoryTest {
         // first make sure question is actually retrieved
         assertTrue(retrievedQuestion.isPresent());
 
-        // then make sure answers is fetched too
+        // then make sure answers are fetched too
         final Optional<Answer> retrievedAnswer = retrievedQuestion.get().getAnswers().stream().findAny();
         assertTrue(retrievedAnswer.isPresent());
         assertEquals(answer, retrievedAnswer.get());

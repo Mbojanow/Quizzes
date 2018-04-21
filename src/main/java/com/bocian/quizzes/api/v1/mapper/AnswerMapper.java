@@ -34,6 +34,9 @@ public interface AnswerMapper {
         }
 
         if (answerDTO.getDescription() != null) {
+            if (answerDTO.getDescription().length() > Answer.DESCRIPTION_MAX_LENGTH) {
+                throw new RuntimeException("FIX ME");
+            }
             answer.setDescription(answerDTO.getDescription());
         }
 
