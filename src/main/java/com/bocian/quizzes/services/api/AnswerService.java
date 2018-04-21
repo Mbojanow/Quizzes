@@ -12,4 +12,10 @@ public interface AnswerService {
     List<AnswerDTO> getAllAnswers();
 
     AnswerDTO createNewAnswer(AnswerDTO answerDTO);
+
+    AnswerDTO saveAnswer(Long id, AnswerDTO answerDTO) throws DbObjectNotFoundException;
+
+    AnswerDTO patchAnswer(Long id, AnswerDTO answerDTO) throws DbObjectNotFoundException;
+
+    void deleteAnswerById(Long id) throws DbObjectNotFoundException;
 }

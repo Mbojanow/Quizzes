@@ -16,4 +16,7 @@ public class AnswerDTO {
 
     @JsonProperty("is_correct")
     private Boolean isCorrect;
+
+    @JsonProperty("answer_url")
+    private String url;
 }
