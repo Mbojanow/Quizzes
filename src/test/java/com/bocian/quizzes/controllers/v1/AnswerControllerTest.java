@@ -38,14 +38,15 @@ public class AnswerControllerTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(answerController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(answerController)
+                .setControllerAdvice(RestExceptionHandler.class).build();
     }
 
     @Test
     public void shouldGetOkWhenGettingAllAnswers() throws Exception {
         final String expectedResponseValue = "{\"answers\":[{\"id\":1,\"description\":\"desc\",\"is_correct\":true," +
                 "\"answer_url\":null},{\"id\":2,\"description\":\"desc2\",\"is_correct\":false,\"answer_url\":null}," +
-                "{\"id\":3,\"description\":\"desc3\",\"is_correct\":false,\"answer_url\":someurl}]}";
+                "{\"id\":3,\"description\":\"desc3\",\"is_correct\":false,\"answer_url\":\"someurl\"}]}";
         when(answerService.getAllAnswers()).thenReturn(Arrays.asList(
                 new AnswerDTO(1L, "desc", true, null),
                 new AnswerDTO(2L, "desc2", false, null),
