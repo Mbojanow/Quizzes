@@ -6,6 +6,7 @@ import com.bocian.quizzes.exceptions.DbObjectNotFoundException;
 import com.bocian.quizzes.model.Answer;
 import com.bocian.quizzes.services.api.AnswerService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,7 +29,7 @@ public class AnswerController {
         return new AnswerListDTO(answerService.getAllAnswers());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public AnswerDTO getAnswer(@PathVariable("id") final Long id) throws DbObjectNotFoundException {
         return answerService.getAnswerById(id);

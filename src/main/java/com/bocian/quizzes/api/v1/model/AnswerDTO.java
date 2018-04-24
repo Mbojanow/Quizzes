@@ -14,7 +14,7 @@ import javax.validation.constraints.Min;
 @AllArgsConstructor
 public class AnswerDTO {
 
-    @Min(value = 1)
+    @Min(value = 1, message = "Id has to be greater than 1")
     private Long id;
 
     @Length(min = 1, max = Answer.DESCRIPTION_MAX_LENGTH)

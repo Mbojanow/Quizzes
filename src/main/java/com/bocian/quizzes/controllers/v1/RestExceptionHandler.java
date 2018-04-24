@@ -16,14 +16,14 @@ public class RestExceptionHandler {
     @ExceptionHandler(DbObjectNotFoundException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public RestCallErrorMessage handleDbObjectNotFoundException(final Exception exception) {
-        log.info("DbObjectNotFoundException occurred. Details: {}", exception);
+        log.debug("DbObjectNotFoundException occurred. Details: {}", exception);
         return new RestCallErrorMessage(exception.getMessage());
     }
 
     @ExceptionHandler(NumberFormatException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public RestCallErrorMessage handleNumberFormatException(final Exception exception, final WebRequest request) {
-        log.info("NumberFormatException occurred. Details: {}", exception);
+        log.debug("NumberFormatException occurred. Details: {}", exception);
         return new RestCallErrorMessage("Failed to convert value to number. Check the requested path: "
                 + request.getDescription(false));
     }

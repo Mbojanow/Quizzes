@@ -1,6 +1,7 @@
 package com.bocian.quizzes.controllers.v1;
 
 import com.bocian.quizzes.api.v1.model.AnswerDTO;
+import com.bocian.quizzes.exceptions.DbObjectNotFoundException;
 import com.bocian.quizzes.services.api.AnswerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
@@ -15,9 +16,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -88,5 +89,29 @@ public class AnswerControllerTest {
                 .andExpect(jsonPath("$.description", is("someDesc")))
                 .andExpect(jsonPath("$.is_correct", is(true)))
                 .andExpect(jsonPath("$.id", is(2)));
+    }
+
+    @Test
+    public void shouldGetBadRequestWhenRequestingNonNumericId() throws Exception {
+        final String returnedMessage = mockMvc.perform(get(AnswerController.ANSWERS_BASE_URL + "/notANumber")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andReturn().getResponse().getContentAsString();
+
+        assertThat(returnedMessage, containsString("Failed to convert value to number"));
+    }
+
+    @Test
+    public void shouldGetBadRequestWhenGettingNonExistingAnswer() throws Exception {
+        final String exceptionMsg = "SomeMSg";
+        when(answerService.getAnswerById(0L)).thenThrow(new DbObjectNotFoundException(exceptionMsg));
+        final String returnedMessage = mockMvc.perform(get(AnswerController.ANSWERS_BASE_URL + "/0")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andReturn().getResponse().getContentAsString();
+
+        assertThat(returnedMessage, containsString(exceptionMsg));
     }
 }

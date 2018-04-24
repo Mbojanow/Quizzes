@@ -61,7 +61,7 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     @Transactional
-    public AnswerDTO patchAnswer(Long id, AnswerDTO answerDTO) throws DbObjectNotFoundException {
+    public AnswerDTO patchAnswer(final Long id, final AnswerDTO answerDTO) throws DbObjectNotFoundException {
         final Answer answer = validateExistenceAndGet(id);
         final Answer updatedAnswer = answerRepository.save(answerMapper.updateAnswerFromAnswerDTO(answerDTO, answer));
         return answerMapper.answerToAnswerDTO(updatedAnswer);
@@ -69,7 +69,7 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     @Transactional
-    public void deleteAnswerById(Long id) throws DbObjectNotFoundException {
+    public void deleteAnswerById(final Long id) throws DbObjectNotFoundException {
         final Answer answer = validateExistenceAndGet(id);
         answerRepository.delete(answer);
     }
