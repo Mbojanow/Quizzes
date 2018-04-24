@@ -24,6 +24,6 @@ public class AnswerDTO {
     private Boolean isCorrect;
 
     @JsonProperty("answer_url")
-    @Length(max = 0, message = "url is an ignored field and if provided, it's value should be empty")
+    @Length(max = 0, message = "url is an ignored field and if provided, it's value should be empty for inserts and updates")
     private String url;
 }

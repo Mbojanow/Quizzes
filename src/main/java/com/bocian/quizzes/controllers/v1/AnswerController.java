@@ -29,26 +29,30 @@ public class AnswerController {
         return new AnswerListDTO(answerService.getAllAnswers());
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public AnswerDTO getAnswer(@PathVariable("id") final Long id) throws DbObjectNotFoundException {
         return answerService.getAnswerById(id);
     }
 
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public AnswerDTO createNewAnswer(@Valid @RequestBody AnswerDTO answerDTO) {
         return answerService.createNewAnswer(answerDTO);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public AnswerDTO updateAnswer(@PathVariable("id") final Long id, @Valid @RequestBody AnswerDTO answerDTO)
             throws DbObjectNotFoundException {
         return answerService.saveAnswer(id, answerDTO);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping(value = "/{id}",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public AnswerDTO patchAnswer(@PathVariable("id") final Long id, @RequestBody AnswerDTO answerDTO)
             throws DbObjectNotFoundException {
@@ -57,7 +61,7 @@ public class AnswerController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void patchAnswer(@PathVariable("id") final Long id) throws DbObjectNotFoundException {
+    public void deleteAnswer(@PathVariable("id") final Long id) throws DbObjectNotFoundException {
         answerService.deleteAnswerById(id);
     }
 }

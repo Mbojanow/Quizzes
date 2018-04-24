@@ -21,8 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class AnswerControllerTest {
@@ -40,7 +39,7 @@ public class AnswerControllerTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(answerController)
-                .setControllerAdvice(RestExceptionHandler.class).build();
+                .setControllerAdvice(RestExceptionHandler.class, RestValidationExceptionHandler.class).build();
     }
 
     @Test
@@ -113,5 +112,58 @@ public class AnswerControllerTest {
                 .andReturn().getResponse().getContentAsString();
 
         assertThat(returnedMessage, containsString(exceptionMsg));
+    }
+
+    @Test
+    public void shouldGetBadRequestWhenInsertingNotValidAnswer() throws Exception {
+        final AnswerDTO requestedDTO = new AnswerDTO(null, "someDesc", true, "someUrl");
+        final String returnedMessage = mockMvc.perform(post(AnswerController.ANSWERS_BASE_URL).content(mapper.writeValueAsString(requestedDTO))
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn().getResponse().getContentAsString();
+
+        assertThat(returnedMessage, containsString("url is an ignored field"));
+    }
+
+    @Test
+    public void shouldGetOkWhenUpdatingValidAnswer() throws Exception {
+        final AnswerDTO returnedDTO = new AnswerDTO(3L, "someDesc", true, "mockedUrl");
+        when(answerService.createNewAnswer(any()))
+                .thenReturn(returnedDTO);
+
+        final AnswerDTO requestedDTO = new AnswerDTO(null, "someDesczzz", false, "");
+        mockMvc.perform(put(AnswerController.ANSWERS_BASE_URL + "/3").content(mapper.writeValueAsString(requestedDTO))
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void shouldGetBadRequestWhenUpdatingInvalidAnswer() throws Exception {
+        final AnswerDTO requestedDTO = new AnswerDTO(null, "someDesc", true, "someUrl");
+        final String returnedMessage = mockMvc.perform(put(AnswerController.ANSWERS_BASE_URL + "/3").content(mapper.writeValueAsString(requestedDTO))
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andReturn().getResponse().getContentAsString();
+
+        assertThat(returnedMessage, containsString("url is an ignored field"));
+    }
+
+    @Test
+    public void shouldGetBadRequestWhenDeletingAnswerWithNan() throws Exception {
+        final String returnedMessage = mockMvc.perform(delete(AnswerController.ANSWERS_BASE_URL + "/DefinatelyNotANumber")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andReturn().getResponse().getContentAsString();
+
+        assertThat(returnedMessage, containsString("Failed to convert value to number"));
+    }
+
+    @Test
+    public void shouldGetNoContentWhenDeletingValidAnswer() throws Exception {
+        mockMvc.perform(delete(AnswerController.ANSWERS_BASE_URL + "/17")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
     }
 }
