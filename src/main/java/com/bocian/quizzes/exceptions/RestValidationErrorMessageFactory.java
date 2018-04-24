@@ -18,6 +18,6 @@ public class RestValidationErrorMessageFactory {
         StringBuilder messageBuilder = new StringBuilder();
         exception.getBindingResult().getAllErrors()
                 .forEach(objectError -> messageBuilder.append(objectError.getDefaultMessage()).append(". "));
-        return messageBuilder.toString();
+        return messageBuilder.toString().trim();
     }
 }
