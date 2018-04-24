@@ -1,6 +1,7 @@
 package com.bocian.quizzes.controllers.v1;
 
 import com.bocian.quizzes.api.v1.model.QuestionDTO;
+import com.bocian.quizzes.api.v1.model.QuestionSetDTO;
 import com.bocian.quizzes.exceptions.DbObjectNotFoundException;
 import com.bocian.quizzes.services.api.QuestionService;
 import org.springframework.http.HttpStatus;
@@ -24,5 +25,11 @@ public class QuestionController {
     @ResponseStatus(HttpStatus.OK)
     public QuestionDTO getQuestion(@PathVariable("id") final Long id) throws DbObjectNotFoundException {
         return questionService.getQuestionById(id);
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public QuestionSetDTO getAllQuestions() {
+        return new QuestionSetDTO(questionService.getAllQuestions());
     }
 }
