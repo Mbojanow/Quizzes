@@ -26,14 +26,12 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
     @Override
-    @Transactional
     public AnswerDTO getAnswerById(final Long id) throws DbObjectNotFoundException {
         final Answer answer = validateExistenceAndGet(id);
         return answerMapper.answerToAnswerDTO(answer);
     }
 
     @Override
-    @Transactional
     public List<AnswerDTO> getAllAnswers() {
         return answerRepository.findAll()
                 .stream()

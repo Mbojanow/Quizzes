@@ -8,7 +8,6 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper
 public interface AnswerMapper {
-
     AnswerMapper INSTANCE = Mappers.getMapper(AnswerMapper.class);
 
     Answer answerDTOToAnswer(AnswerDTO answerDTO);
