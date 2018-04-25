@@ -42,7 +42,7 @@ public class AnswerServiceImpl implements AnswerService {
     @Override
     @Transactional
     public AnswerDTO createNewAnswer(final AnswerDTO answerDTO) {
-        Answer answer = answerMapper.answerDTOToAnswer(answerDTO);
+        final Answer answer = answerMapper.answerDTOToAnswer(answerDTO);
         return answerMapper.answerToAnswerDTO(answerRepository.save(answer));
     }
 

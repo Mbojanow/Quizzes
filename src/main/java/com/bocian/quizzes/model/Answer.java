@@ -26,7 +26,7 @@ public class Answer extends BaseEntity {
     @Column(name = "IS_CORRECT", nullable = false)
     private Boolean isCorrect;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "QUESTION_ID", referencedColumnName = BaseEntity.ID_COLUMN_NAME)
     private Question question;
 }

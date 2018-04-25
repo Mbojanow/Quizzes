@@ -11,4 +11,6 @@ public interface QuestionService {
     QuestionDTO getQuestionById(Long id) throws DbObjectNotFoundException;
 
     Set<QuestionDTO> getAllQuestions();
+
+    QuestionDTO createQuestion(QuestionDTO questionDTO);
 }

@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 import static com.bocian.quizzes.controllers.v1.QuestionController.QUESTIONS_BASE_URL;
 
 @RestController
@@ -31,5 +33,11 @@ public class QuestionController {
     @ResponseStatus(HttpStatus.OK)
     public QuestionSetDTO getAllQuestions() {
         return new QuestionSetDTO(questionService.getAllQuestions());
+    }
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public QuestionDTO createQuestion(@Valid @RequestBody final QuestionDTO questionDTO) {
+        return questionService.createQuestion(questionDTO);
     }
 }

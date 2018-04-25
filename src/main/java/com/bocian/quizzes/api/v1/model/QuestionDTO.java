@@ -8,13 +8,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class QuestionDTO {
+
+    @Min(value = 1, message = "Id has to be greater than 1")
+    private Long id;
 
     @NotNull(message = "type cannot be null")
     private QuestionType type;
@@ -26,7 +31,7 @@ public class QuestionDTO {
     private Difficulty difficulty;
 
     @NotNull(message = "Question value is mandatory. You need to ask something, right?!")
-    @Length(min = 10)
+    @Length(min = 10, message = "Question length too short!")
     private String description;
 
     @NotNull

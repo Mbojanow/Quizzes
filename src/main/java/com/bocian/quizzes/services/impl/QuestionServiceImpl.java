@@ -2,13 +2,13 @@ package com.bocian.quizzes.services.impl;
 
 import com.bocian.quizzes.api.v1.mapper.QuestionMapper;
 import com.bocian.quizzes.api.v1.model.QuestionDTO;
-import com.bocian.quizzes.api.v1.model.QuestionSetDTO;
 import com.bocian.quizzes.exceptions.DbObjectNotFoundException;
 import com.bocian.quizzes.exceptions.ErrorMessageFactory;
 import com.bocian.quizzes.model.Question;
 import com.bocian.quizzes.repositories.QuestionRepository;
 import com.bocian.quizzes.services.api.QuestionService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.Set;
@@ -40,6 +40,13 @@ public class QuestionServiceImpl implements QuestionService {
         return questionRepository.findAll().stream()
                 .map(questionMapper::questionToQuestionDTO)
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    @Transactional
+    public QuestionDTO createQuestion(final QuestionDTO questionDTO) {
+        final Question questionToInsert = questionMapper.questionDTOToQuestion(questionDTO);
+        return questionMapper.questionToQuestionDTO(questionRepository.save(questionToInsert));
     }
 
 }

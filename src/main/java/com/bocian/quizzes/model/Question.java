@@ -41,7 +41,7 @@ public class Question extends BaseEntity {
     @Column(name = "TAG")
     private String tag;
 
-    @OneToMany(mappedBy = Answer.QUESTION_FIELD_NAME, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = Answer.QUESTION_FIELD_NAME, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Answer> answers = new HashSet<>();
 
     @ManyToOne
@@ -51,8 +51,10 @@ public class Question extends BaseEntity {
     public void setAnswers(final Set<Answer> answers) {
         // answers can be null if Question was created by lombok's builder
         createEmptyAnswersIfNull();
-        answers.forEach(answer -> answer.setQuestion(this));
-        this.answers = answers;
+        if (answers != null) {
+            answers.forEach(answer -> answer.setQuestion(this));
+            this.answers = answers;
+        }
     }
 
     public void addAnswer(final Answer answer) {
