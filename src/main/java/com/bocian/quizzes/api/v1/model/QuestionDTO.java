@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -18,26 +19,27 @@ import java.util.Set;
 @NoArgsConstructor
 public class QuestionDTO {
 
-    @Min(value = 1, message = "Id has to be greater than 1")
     private Long id;
 
     @NotNull(message = "type cannot be null")
     private QuestionType type;
 
     @JsonProperty("duration_in_minutes")
+    @NotNull(message = "duration has to be specified")
     private Long durationInMinutes;
 
     @NotNull(message = "Question's difficulty has to be provided")
     private Difficulty difficulty;
 
     @NotNull(message = "Question value is mandatory. You need to ask something, right?!")
-    @Length(min = 10, message = "Question length too short!")
+    @Length(min = 10, message = "Question length too short! It has to be at least 10 characters long")
     private String description;
 
-    @NotNull
+    @NotNull(message = "tag has to be specified")
     @Length(min = 2, message = "Tag has to be at least 2 character long")
     private String tag;
 
     @JsonProperty("possible_answers")
+    @Valid
     private Set<AnswerDTO> answers;
 }

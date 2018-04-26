@@ -43,6 +43,7 @@ public class AnswerServiceImpl implements AnswerService {
     @Transactional
     public AnswerDTO createNewAnswer(final AnswerDTO answerDTO) {
         final Answer answer = answerMapper.answerDTOToAnswer(answerDTO);
+        answer.setId(null);
         return answerMapper.answerToAnswerDTO(answerRepository.save(answer));
     }
 
@@ -53,7 +54,6 @@ public class AnswerServiceImpl implements AnswerService {
         Answer updatedAnswer = answerMapper.answerDTOToAnswer(answerDTO);
         updatedAnswer.setId(id);
         updatedAnswer = answerRepository.save(updatedAnswer);
-
         return answerMapper.answerToAnswerDTO(updatedAnswer);
     }
 
@@ -62,6 +62,7 @@ public class AnswerServiceImpl implements AnswerService {
     public AnswerDTO patchAnswer(final Long id, final AnswerDTO answerDTO) throws DbObjectNotFoundException {
         final Answer answer = validateExistenceAndGet(id);
         final Answer updatedAnswer = answerRepository.save(answerMapper.updateAnswerFromAnswerDTO(answerDTO, answer));
+        updatedAnswer.setId(id);
         return answerMapper.answerToAnswerDTO(updatedAnswer);
     }
 
@@ -70,6 +71,11 @@ public class AnswerServiceImpl implements AnswerService {
     public void deleteAnswerById(final Long id) throws DbObjectNotFoundException {
         final Answer answer = validateExistenceAndGet(id);
         answerRepository.delete(answer);
+    }
+
+    @Override
+    public List<AnswerDTO> getUnassignedToQuestion() {
+        return null;
     }
 
     private Answer validateExistenceAndGet(final Long id) throws DbObjectNotFoundException {

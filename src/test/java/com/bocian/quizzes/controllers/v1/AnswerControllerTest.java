@@ -115,14 +115,25 @@ public class AnswerControllerTest {
     }
 
     @Test
-    public void shouldGetBadRequestWhenInsertingNotValidAnswer() throws Exception {
-        final AnswerDTO requestedDTO = new AnswerDTO(null, "someDesc", true, "someUrl");
+    public void shouldGetBadRequestWhenInsertingNotValidAnswerWithNullDescription() throws Exception {
+        final AnswerDTO requestedDTO = new AnswerDTO(null, null, true, "someUrl");
         final String returnedMessage = mockMvc.perform(post(AnswerController.ANSWERS_BASE_URL).content(mapper.writeValueAsString(requestedDTO))
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest()).andReturn().getResponse().getContentAsString();
 
-        assertThat(returnedMessage, containsString("url is an ignored field"));
+        assertThat(returnedMessage, containsString("description has to be specified"));
+    }
+
+    @Test
+    public void shouldGetBadRequestWhenInsertingNotValidAnswerWithNullCorrect() throws Exception {
+        final AnswerDTO requestedDTO = new AnswerDTO(null, "descSpecified", null, "someUrl");
+        final String returnedMessage = mockMvc.perform(post(AnswerController.ANSWERS_BASE_URL).content(mapper.writeValueAsString(requestedDTO))
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest()).andReturn().getResponse().getContentAsString();
+
+        assertThat(returnedMessage, containsString("You need to specify if answer is correct"));
     }
 
     @Test
@@ -139,15 +150,39 @@ public class AnswerControllerTest {
     }
 
     @Test
-    public void shouldGetBadRequestWhenUpdatingInvalidAnswer() throws Exception {
-        final AnswerDTO requestedDTO = new AnswerDTO(null, "someDesc", true, "someUrl");
+    public void shouldGetBadRequestWhenUpdatingInvalidAnswerWithNullDescription() throws Exception {
+        final AnswerDTO requestedDTO = new AnswerDTO(null, null, true, "someUrl");
         final String returnedMessage = mockMvc.perform(put(AnswerController.ANSWERS_BASE_URL + "/3").content(mapper.writeValueAsString(requestedDTO))
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andReturn().getResponse().getContentAsString();
 
-        assertThat(returnedMessage, containsString("url is an ignored field"));
+        assertThat(returnedMessage, containsString("description has to be specified"));
+    }
+
+    @Test
+    public void shouldGetBadRequestWhenUpdatingInvalidAnswerWithNullCorrect() throws Exception {
+        final AnswerDTO requestedDTO = new AnswerDTO(null, "some desc", null, "someUrl");
+        final String returnedMessage = mockMvc.perform(put(AnswerController.ANSWERS_BASE_URL + "/3").content(mapper.writeValueAsString(requestedDTO))
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andReturn().getResponse().getContentAsString();
+
+        assertThat(returnedMessage, containsString("You need to specify if answer is correct"));
+    }
+
+    @Test
+    public void shouldGetBadRequestWhenUpdatingInvalidAnswerEmptyDescription() throws Exception {
+        final AnswerDTO requestedDTO = new AnswerDTO(null, "", false, "someUrl");
+        final String returnedMessage = mockMvc.perform(put(AnswerController.ANSWERS_BASE_URL + "/3").content(mapper.writeValueAsString(requestedDTO))
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andReturn().getResponse().getContentAsString();
+
+        assertThat(returnedMessage, containsString("description cannot be empty"));
     }
 
     @Test

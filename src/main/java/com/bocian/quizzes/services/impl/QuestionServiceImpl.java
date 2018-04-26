@@ -27,12 +27,8 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public QuestionDTO getQuestionById(Long id) throws DbObjectNotFoundException {
-        final Optional<Question> question = questionRepository.findByIdWithAnswers(id);
-        if (!question.isPresent()) {
-            throw new DbObjectNotFoundException(ErrorMessageFactory
-                    .createEntityObjectWithNumericIdMissingMessage(id, Question.QUESTION_TABLE_NAME));
-        }
-        return questionMapper.questionToQuestionDTO(question.get());
+        final Question question = validateExistenceAndGet(id);
+        return questionMapper.questionToQuestionDTO(question);
     }
 
     @Override
@@ -46,7 +42,25 @@ public class QuestionServiceImpl implements QuestionService {
     @Transactional
     public QuestionDTO createQuestion(final QuestionDTO questionDTO) {
         final Question questionToInsert = questionMapper.questionDTOToQuestion(questionDTO);
+        questionToInsert.setId(null);
         return questionMapper.questionToQuestionDTO(questionRepository.save(questionToInsert));
+    }
+
+    @Override
+    public QuestionDTO saveQuestion(final Long id, final QuestionDTO questionDTO) throws DbObjectNotFoundException {
+        validateExistenceAndGet(id);
+        final Question updatedQuestion = questionMapper.questionDTOToQuestion(questionDTO);
+        updatedQuestion.setId(id);
+        return questionMapper.questionToQuestionDTO(questionRepository.save(updatedQuestion));
+    }
+
+    private Question validateExistenceAndGet(final Long id) throws DbObjectNotFoundException {
+        final Optional<Question> question = questionRepository.findById(id);
+        if (!question.isPresent()) {
+            throw new DbObjectNotFoundException(ErrorMessageFactory
+                    .createEntityObjectWithNumericIdMissingMessage(id, Question.QUESTION_TABLE_NAME));
+        }
+        return question.get();
     }
 
 }

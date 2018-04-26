@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 
 import static com.bocian.quizzes.controllers.v1.QuestionController.QUESTIONS_BASE_URL;
 
@@ -38,6 +39,22 @@ public class QuestionController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public QuestionDTO createQuestion(@Valid @RequestBody final QuestionDTO questionDTO) {
+        detachAnswers(questionDTO);
         return questionService.createQuestion(questionDTO);
+    }
+
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public QuestionDTO updateQuestion(@PathVariable("id") final Long id,
+                                      @Valid @RequestBody final QuestionDTO questionDTO)
+            throws DbObjectNotFoundException {
+
+        return questionService.saveQuestion(id, questionDTO);
+    }
+
+    private void detachAnswers(final QuestionDTO questionDTO) {
+        if (questionDTO.getAnswers() != null) {
+            questionDTO.getAnswers().forEach(answerDTO -> answerDTO.setId(null));
+        }
     }
 }

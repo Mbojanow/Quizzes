@@ -18,4 +18,6 @@ public interface AnswerService {
     AnswerDTO patchAnswer(Long id, AnswerDTO answerDTO) throws DbObjectNotFoundException;
 
     void deleteAnswerById(Long id) throws DbObjectNotFoundException;
+
+    List<AnswerDTO> getUnassignedToQuestion();
 }
