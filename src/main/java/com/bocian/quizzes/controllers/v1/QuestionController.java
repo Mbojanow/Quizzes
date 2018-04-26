@@ -3,6 +3,7 @@ package com.bocian.quizzes.controllers.v1;
 import com.bocian.quizzes.api.v1.model.QuestionDTO;
 import com.bocian.quizzes.api.v1.model.QuestionSetDTO;
 import com.bocian.quizzes.exceptions.DbObjectNotFoundException;
+import com.bocian.quizzes.exceptions.ObjectNotValidException;
 import com.bocian.quizzes.services.api.QuestionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -43,13 +44,23 @@ public class QuestionController {
         return questionService.createQuestion(questionDTO);
     }
 
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public QuestionDTO updateQuestion(@PathVariable("id") final Long id,
                                       @Valid @RequestBody final QuestionDTO questionDTO)
             throws DbObjectNotFoundException {
 
         return questionService.saveQuestion(id, questionDTO);
+    }
+
+    @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public QuestionDTO patchQuestion(@PathVariable("id") final Long id,
+                                     @RequestBody final QuestionDTO questionDTO)
+            throws DbObjectNotFoundException, ObjectNotValidException {
+        return questionService.patchQuestion(id, questionDTO);
     }
 
     private void detachAnswers(final QuestionDTO questionDTO) {

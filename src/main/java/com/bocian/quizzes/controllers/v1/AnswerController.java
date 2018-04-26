@@ -3,6 +3,7 @@ package com.bocian.quizzes.controllers.v1;
 import com.bocian.quizzes.api.v1.model.AnswerDTO;
 import com.bocian.quizzes.api.v1.model.AnswerListDTO;
 import com.bocian.quizzes.exceptions.DbObjectNotFoundException;
+import com.bocian.quizzes.exceptions.ObjectNotValidException;
 import com.bocian.quizzes.model.Answer;
 import com.bocian.quizzes.services.api.AnswerService;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,12 @@ public class AnswerController {
         return answerService.getAnswerById(id);
     }
 
+    @GetMapping(value = "/unassigned", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public AnswerListDTO getUnassigned() {
+        return new AnswerListDTO(answerService.getUnassignedToQuestion());
+    }
+
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public AnswerDTO createNewAnswer(@Valid @RequestBody AnswerDTO answerDTO) {
@@ -55,7 +62,7 @@ public class AnswerController {
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public AnswerDTO patchAnswer(@PathVariable("id") final Long id, @RequestBody AnswerDTO answerDTO)
-            throws DbObjectNotFoundException {
+            throws DbObjectNotFoundException, ObjectNotValidException {
         return answerService.patchAnswer(id, answerDTO);
     }
 

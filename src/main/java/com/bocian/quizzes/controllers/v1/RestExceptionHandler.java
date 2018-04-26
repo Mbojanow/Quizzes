@@ -1,6 +1,7 @@
 package com.bocian.quizzes.controllers.v1;
 
 import com.bocian.quizzes.exceptions.DbObjectNotFoundException;
+import com.bocian.quizzes.exceptions.ObjectNotValidException;
 import com.bocian.quizzes.exceptions.RestCallErrorMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,14 @@ public class RestExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public RestCallErrorMessage handleNumberFormatException(final Exception exception, final WebRequest request) {
         log.debug("NumberFormatException occurred. Details: {}", exception);
-        return new RestCallErrorMessage("Failed to convert value to number. Check the requested path: "
+        return new RestCallErrorMessage("Failed to convert value to number. Check your request and the requested path: "
                 + request.getDescription(false));
+    }
+
+    @ExceptionHandler(ObjectNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public RestCallErrorMessage handleObjectNotValidException(final Exception exception) {
+        log.debug("ObjectNotValidException occurred. Details: {}", exception);
+        return new RestCallErrorMessage(exception.getMessage());
     }
 }

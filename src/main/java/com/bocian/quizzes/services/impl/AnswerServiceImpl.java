@@ -4,6 +4,7 @@ import com.bocian.quizzes.api.v1.mapper.AnswerMapper;
 import com.bocian.quizzes.api.v1.model.AnswerDTO;
 import com.bocian.quizzes.exceptions.DbObjectNotFoundException;
 import com.bocian.quizzes.exceptions.ErrorMessageFactory;
+import com.bocian.quizzes.exceptions.ObjectNotValidException;
 import com.bocian.quizzes.model.Answer;
 import com.bocian.quizzes.repositories.AnswerRepository;
 import com.bocian.quizzes.services.api.AnswerService;
@@ -65,11 +66,12 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     @Transactional
-    public AnswerDTO patchAnswer(final Long id, final AnswerDTO answerDTO) throws DbObjectNotFoundException {
+    public AnswerDTO patchAnswer(final Long id, final AnswerDTO answerDTO) throws DbObjectNotFoundException,
+            ObjectNotValidException {
         final Answer answer = validateExistenceAndGet(id);
+        answerDTO.setId(id);
+        log.debug("Partially updating answer with id: " + id);
         final Answer updatedAnswer = answerRepository.save(answerMapper.updateAnswerFromAnswerDTO(answerDTO, answer));
-        updatedAnswer.setId(id);
-        log.debug("Partially updateing answer with id: " + id);
         return answerMapper.answerToAnswerDTO(updatedAnswer);
     }
 
@@ -83,7 +85,9 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     public List<AnswerDTO> getUnassignedToQuestion() {
-        return null;
+        return answerRepository.findByQuestion(null).stream()
+                .map(answerMapper::answerToAnswerDTO)
+                .collect(Collectors.toList());
     }
 
     private Answer validateExistenceAndGet(final Long id) throws DbObjectNotFoundException {

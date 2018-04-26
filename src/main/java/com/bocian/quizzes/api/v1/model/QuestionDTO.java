@@ -19,6 +19,10 @@ import java.util.Set;
 @NoArgsConstructor
 public class QuestionDTO {
 
+    public static final long MIN_DURATION = 1;
+    public static final int MIN_DESCRIPTION_LENGTH = 10;
+    public static final int MIN_TAG_LENGTH = 2;
+
     private Long id;
 
     @NotNull(message = "type cannot be null")
@@ -26,17 +30,18 @@ public class QuestionDTO {
 
     @JsonProperty("duration_in_minutes")
     @NotNull(message = "duration has to be specified")
+    @Min(value = MIN_DURATION, message = "Duration has to be positive")
     private Long durationInMinutes;
 
     @NotNull(message = "Question's difficulty has to be provided")
     private Difficulty difficulty;
 
     @NotNull(message = "Question value is mandatory. You need to ask something, right?!")
-    @Length(min = 10, message = "Question length too short! It has to be at least 10 characters long")
+    @Length(min = MIN_DESCRIPTION_LENGTH, message = "Question length too short! It has to be at least 10 characters long")
     private String description;
 
     @NotNull(message = "tag has to be specified")
-    @Length(min = 2, message = "Tag has to be at least 2 character long")
+    @Length(min = MIN_TAG_LENGTH, message = "Tag has to be at least 2 character long")
     private String tag;
 
     @JsonProperty("possible_answers")

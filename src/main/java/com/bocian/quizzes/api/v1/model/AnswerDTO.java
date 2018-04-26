@@ -14,9 +14,11 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class AnswerDTO {
 
+    public static final int MIN_DESCRIPTION_LENGTH = 1;
+
     private Long id;
 
-    @Length(min = 1, max = Answer.DESCRIPTION_MAX_LENGTH, message = "description cannot be empty")
+    @Length(min = MIN_DESCRIPTION_LENGTH, max = Answer.DESCRIPTION_MAX_LENGTH, message = "description cannot be empty")
     @NotNull(message = "description has to be specified")
     private String description;
 

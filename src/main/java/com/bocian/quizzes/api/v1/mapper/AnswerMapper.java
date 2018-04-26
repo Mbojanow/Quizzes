@@ -2,6 +2,7 @@ package com.bocian.quizzes.api.v1.mapper;
 
 import com.bocian.quizzes.api.v1.model.AnswerDTO;
 import com.bocian.quizzes.controllers.v1.AnswerController;
+import com.bocian.quizzes.exceptions.ObjectNotValidException;
 import com.bocian.quizzes.model.Answer;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -27,14 +28,17 @@ public interface AnswerMapper {
         return answerDTO;
     }
 
-    default Answer updateAnswerFromAnswerDTO(final AnswerDTO answerDTO, final Answer answer) {
+    default Answer updateAnswerFromAnswerDTO(final AnswerDTO answerDTO, final Answer answer) throws ObjectNotValidException {
         if (answerDTO.getIsCorrect() != null) {
             answer.setIsCorrect(answerDTO.getIsCorrect());
         }
 
         if (answerDTO.getDescription() != null) {
-            if (answerDTO.getDescription().length() > Answer.DESCRIPTION_MAX_LENGTH) {
-                throw new RuntimeException("FIX ME");
+            if (answerDTO.getDescription().length() > Answer.DESCRIPTION_MAX_LENGTH
+                    || answerDTO.getDescription().length() < AnswerDTO.MIN_DESCRIPTION_LENGTH) {
+                throw new ObjectNotValidException("Description length has to be between "
+                        + AnswerDTO.MIN_DESCRIPTION_LENGTH
+                        + " and " + Answer.DESCRIPTION_MAX_LENGTH);
             }
             answer.setDescription(answerDTO.getDescription());
         }
