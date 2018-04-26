@@ -7,6 +7,7 @@ import com.bocian.quizzes.exceptions.ErrorMessageFactory;
 import com.bocian.quizzes.model.Answer;
 import com.bocian.quizzes.repositories.AnswerRepository;
 import com.bocian.quizzes.services.api.AnswerService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class AnswerServiceImpl implements AnswerService {
 
     private final AnswerMapper answerMapper;
@@ -28,11 +30,13 @@ public class AnswerServiceImpl implements AnswerService {
     @Override
     public AnswerDTO getAnswerById(final Long id) throws DbObjectNotFoundException {
         final Answer answer = validateExistenceAndGet(id);
+        log.debug("Answer by id " + id + " requested");
         return answerMapper.answerToAnswerDTO(answer);
     }
 
     @Override
     public List<AnswerDTO> getAllAnswers() {
+        log.debug("All answers requested");
         return answerRepository.findAll()
                 .stream()
                 .map(answerMapper::answerToAnswerDTO)
@@ -44,6 +48,7 @@ public class AnswerServiceImpl implements AnswerService {
     public AnswerDTO createNewAnswer(final AnswerDTO answerDTO) {
         final Answer answer = answerMapper.answerDTOToAnswer(answerDTO);
         answer.setId(null);
+        log.debug("Creating new answer");
         return answerMapper.answerToAnswerDTO(answerRepository.save(answer));
     }
 
@@ -53,6 +58,7 @@ public class AnswerServiceImpl implements AnswerService {
         validateExistenceAndGet(id);
         Answer updatedAnswer = answerMapper.answerDTOToAnswer(answerDTO);
         updatedAnswer.setId(id);
+        log.debug("Updating answer with id: " + id);
         updatedAnswer = answerRepository.save(updatedAnswer);
         return answerMapper.answerToAnswerDTO(updatedAnswer);
     }
@@ -63,6 +69,7 @@ public class AnswerServiceImpl implements AnswerService {
         final Answer answer = validateExistenceAndGet(id);
         final Answer updatedAnswer = answerRepository.save(answerMapper.updateAnswerFromAnswerDTO(answerDTO, answer));
         updatedAnswer.setId(id);
+        log.debug("Partially updateing answer with id: " + id);
         return answerMapper.answerToAnswerDTO(updatedAnswer);
     }
 
@@ -70,6 +77,7 @@ public class AnswerServiceImpl implements AnswerService {
     @Transactional
     public void deleteAnswerById(final Long id) throws DbObjectNotFoundException {
         final Answer answer = validateExistenceAndGet(id);
+        log.debug("Deleting answer with id: " + id);
         answerRepository.delete(answer);
     }
 
