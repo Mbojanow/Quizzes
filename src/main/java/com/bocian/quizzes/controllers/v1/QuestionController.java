@@ -50,7 +50,6 @@ public class QuestionController {
     public QuestionDTO updateQuestion(@PathVariable("id") final Long id,
                                       @Valid @RequestBody final QuestionDTO questionDTO)
             throws DbObjectNotFoundException {
-
         return questionService.saveQuestion(id, questionDTO);
     }
 
@@ -61,6 +60,12 @@ public class QuestionController {
                                      @RequestBody final QuestionDTO questionDTO)
             throws DbObjectNotFoundException, ObjectNotValidException {
         return questionService.patchQuestion(id, questionDTO);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteQuestion(@PathVariable("id") final Long id) throws DbObjectNotFoundException {
+        questionService.deleteQuestion(id);
     }
 
     private void detachAnswers(final QuestionDTO questionDTO) {

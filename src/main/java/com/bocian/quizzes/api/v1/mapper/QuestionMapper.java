@@ -25,7 +25,7 @@ public interface QuestionMapper {
     default Question updateQuestionFromQuestionDTO(final QuestionDTO questionDTO,
                                                    final Question question) throws ObjectNotValidException {
         if (questionDTO.getDescription() != null) {
-            if (question.getDescription().length() < QuestionDTO.MIN_DESCRIPTION_LENGTH) {
+            if (questionDTO.getDescription().length() < QuestionDTO.MIN_DESCRIPTION_LENGTH) {
                 throw new ObjectNotValidException("Description length too short. Has to be at least: "
                         + QuestionDTO.MIN_DESCRIPTION_LENGTH);
             }
@@ -44,7 +44,7 @@ public interface QuestionMapper {
         }
 
         if (questionDTO.getType() != null) {
-            questionDTO.setType(questionDTO.getType());
+            question.setType(questionDTO.getType());
         }
 
         if (questionDTO.getTag() != null) {
@@ -52,7 +52,7 @@ public interface QuestionMapper {
                 throw new ObjectNotValidException("Tag value too short. Has to be at least "
                         + QuestionDTO.MIN_TAG_LENGTH);
             }
-            questionDTO.setTag(questionDTO.getTag());
+            question.setTag(questionDTO.getTag());
         }
 
         return question;
