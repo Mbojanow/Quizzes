@@ -1,6 +1,7 @@
 package com.bocian.quizzes.controllers.v1;
 
 import com.bocian.quizzes.exceptions.DbObjectNotFoundException;
+import com.bocian.quizzes.exceptions.InvalidRequestException;
 import com.bocian.quizzes.exceptions.ObjectNotValidException;
 import com.bocian.quizzes.exceptions.RestCallErrorMessage;
 import lombok.extern.slf4j.Slf4j;
@@ -34,5 +35,12 @@ public class RestExceptionHandler {
     public RestCallErrorMessage handleObjectNotValidException(final Exception exception) {
         log.debug("ObjectNotValidException occurred. Details: {}", exception);
         return new RestCallErrorMessage(exception.getMessage());
+    }
+
+    @ExceptionHandler(InvalidRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public RestCallErrorMessage handleInvalidRequestException(final Exception exception) {
+        log.debug("InvalidRequestException. Details: {}", exception);
+        return new RestCallErrorMessage("Invalid request. " + exception.getMessage());
     }
 }

@@ -2,13 +2,16 @@ package com.bocian.quizzes.services.impl;
 
 import com.bocian.quizzes.api.v1.mapper.QuestionMapper;
 import com.bocian.quizzes.api.v1.model.QuestionDTO;
+import com.bocian.quizzes.common.QuestionType;
 import com.bocian.quizzes.exceptions.DbObjectNotFoundException;
 import com.bocian.quizzes.exceptions.ErrorMessageFactory;
+import com.bocian.quizzes.exceptions.InvalidRequestException;
 import com.bocian.quizzes.exceptions.ObjectNotValidException;
+import com.bocian.quizzes.model.Answer;
 import com.bocian.quizzes.model.Question;
+import com.bocian.quizzes.repositories.AnswerRepository;
 import com.bocian.quizzes.repositories.QuestionRepository;
 import com.bocian.quizzes.services.api.QuestionService;
-import org.aspectj.weaver.patterns.TypePatternQuestions;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,16 +23,20 @@ import java.util.stream.Collectors;
 public class QuestionServiceImpl implements QuestionService {
 
     private final QuestionRepository questionRepository;
+    private final AnswerRepository answerRepository;
     private final QuestionMapper questionMapper;
 
-    public QuestionServiceImpl(final QuestionRepository questionRepository, final QuestionMapper questionMapper) {
+    public QuestionServiceImpl(final QuestionRepository questionRepository,
+                               final AnswerRepository answerRepository,
+                               final QuestionMapper questionMapper) {
         this.questionRepository = questionRepository;
+        this.answerRepository = answerRepository;
         this.questionMapper = questionMapper;
     }
 
     @Override
     public QuestionDTO getQuestionById(Long id) throws DbObjectNotFoundException {
-        final Question question = validateExistenceAndGet(id);
+        final Question question = validateQuestionExistenceAndGet(id);
         return questionMapper.questionToQuestionDTO(question);
     }
 
@@ -51,7 +58,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     @Transactional
     public QuestionDTO saveQuestion(final Long id, final QuestionDTO questionDTO) throws DbObjectNotFoundException {
-        validateExistenceAndGet(id);
+        validateQuestionExistenceAndGet(id);
         final Question updatedQuestion = questionMapper.questionDTOToQuestion(questionDTO);
         updatedQuestion.setId(id);
         return questionMapper.questionToQuestionDTO(questionRepository.save(updatedQuestion));
@@ -59,8 +66,8 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     @Transactional
-    public QuestionDTO patchQuestion(Long id, QuestionDTO questionDTO) throws DbObjectNotFoundException, ObjectNotValidException {
-        final Question question = validateExistenceAndGet(id);
+    public QuestionDTO patchQuestion(final Long id, final QuestionDTO questionDTO) throws DbObjectNotFoundException, ObjectNotValidException {
+        final Question question = validateQuestionExistenceAndGet(id);
         questionDTO.setId(id);
         final Question updatedQuestion = questionRepository
                 .save(questionMapper.updateQuestionFromQuestionDTO(questionDTO, question));
@@ -70,18 +77,56 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     @Transactional
-    public void deleteQuestion(Long id) throws DbObjectNotFoundException {
-        final Question question = validateExistenceAndGet(id);
+    public void deleteQuestion(final Long id) throws DbObjectNotFoundException {
+        final Question question = validateQuestionExistenceAndGet(id);
         questionRepository.delete(question);
     }
 
-    private Question validateExistenceAndGet(final Long id) throws DbObjectNotFoundException {
+    @Override
+    @Transactional
+    public void addExistingAnswer(final Long answerId, final Long questionId) throws DbObjectNotFoundException, InvalidRequestException {
+        final Question question = validateQuestionExistenceAndGet(questionId);
+        if (!requiresSpecificAnswer(question)) {
+            throw new InvalidRequestException("Question of type \"" + question.getType().name().toLowerCase() +
+                    "\" cannot have a specific question attached");
+        }
+
+        final Answer answer = validateAnswerExistenceAndGet(answerId);
+
+        if (question.getAnswers().contains(answer)) {
+            throw new InvalidRequestException("Question has already answer with id " + answerId + " as possible answer");
+        }
+
+        if (answer.getIsCorrect() && question.getType() == QuestionType.SINGLE_CHOICE && question.getAnswers()
+                .stream().anyMatch(Answer::getIsCorrect)) {
+            throw new InvalidRequestException("Single choice answer can have only one correct answer");
+        }
+
+        question.addAnswer(answer);
+        questionRepository.save(question);
+    }
+
+    private Question validateQuestionExistenceAndGet(final Long id) throws DbObjectNotFoundException {
         final Optional<Question> question = questionRepository.findById(id);
         if (!question.isPresent()) {
             throw new DbObjectNotFoundException(ErrorMessageFactory
                     .createEntityObjectWithNumericIdMissingMessage(id, Question.QUESTION_TABLE_NAME));
         }
         return question.get();
+    }
+
+    private Answer validateAnswerExistenceAndGet(final Long id) throws DbObjectNotFoundException {
+        final Optional<Answer> answer = answerRepository.findById(id);
+        if (!answer.isPresent()) {
+            throw new DbObjectNotFoundException(ErrorMessageFactory
+                    .createEntityObjectWithNumericIdMissingMessage(id, Answer.ANSWER_TABLE_NAME));
+        }
+        return answer.get();
+    }
+
+    private static boolean requiresSpecificAnswer(final Question question) {
+        final QuestionType questionType = question.getType();
+        return questionType == QuestionType.SINGLE_CHOICE || questionType == QuestionType.MULTI_CHOICE;
     }
 
 }

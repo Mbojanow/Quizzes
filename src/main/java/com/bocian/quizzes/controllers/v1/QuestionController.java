@@ -3,6 +3,7 @@ package com.bocian.quizzes.controllers.v1;
 import com.bocian.quizzes.api.v1.model.QuestionDTO;
 import com.bocian.quizzes.api.v1.model.QuestionSetDTO;
 import com.bocian.quizzes.exceptions.DbObjectNotFoundException;
+import com.bocian.quizzes.exceptions.InvalidRequestException;
 import com.bocian.quizzes.exceptions.ObjectNotValidException;
 import com.bocian.quizzes.services.api.QuestionService;
 import org.springframework.http.HttpStatus;
@@ -66,6 +67,14 @@ public class QuestionController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteQuestion(@PathVariable("id") final Long id) throws DbObjectNotFoundException {
         questionService.deleteQuestion(id);
+    }
+
+    @PostMapping(value = "/{questionId}/{answerId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void addAnswerToQuestion(@PathVariable("questionId") final Long questionId,
+                                    @PathVariable("answerId") final Long answerId)
+            throws DbObjectNotFoundException, InvalidRequestException {
+        questionService.addExistingAnswer(answerId, questionId);
     }
 
     private void detachAnswers(final QuestionDTO questionDTO) {

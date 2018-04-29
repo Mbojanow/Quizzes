@@ -44,7 +44,7 @@ public class Question extends BaseEntity {
     @OneToMany(mappedBy = Answer.QUESTION_FIELD_NAME, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Answer> answers = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "QUIZ_ID", referencedColumnName = BaseEntity.ID_COLUMN_NAME)
     private Quiz quiz;
 

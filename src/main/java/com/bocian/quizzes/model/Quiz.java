@@ -29,11 +29,11 @@ public class Quiz extends BaseEntity {
     @OneToMany(mappedBy = Question.QUIZ_FIELD_NAME, fetch = FetchType.LAZY)
     private List<Question> questions = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "LEARNING_PATH_ID", referencedColumnName = BaseEntity.ID_COLUMN_NAME)
     private LearningPath learningPath;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = QUIZZES_TO_PRODUCTS_TABLE_NAME,
             joinColumns = @JoinColumn(name = QUIZ_ID_JOIN_COL_NAME, referencedColumnName = BaseEntity.ID_COLUMN_NAME),
             inverseJoinColumns = @JoinColumn(name = PRODUCT_ID_JOIN_COL_NAME, referencedColumnName = BaseEntity.ID_COLUMN_NAME))
