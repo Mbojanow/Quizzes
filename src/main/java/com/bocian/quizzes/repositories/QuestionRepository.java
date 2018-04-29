@@ -16,4 +16,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     @Query(value = "select q from Question q left join fetch q.answers a WHERE q.id = :id")
     Optional<Question> findByIdWithAnswers(@Param("id") Long id);
+
+    @Query(value = "select q from Question q join fetch q.answers")
+    List<Question> findAllWithAnswers();
 }

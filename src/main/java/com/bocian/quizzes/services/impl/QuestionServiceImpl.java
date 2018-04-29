@@ -36,13 +36,13 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public QuestionDTO getQuestionById(Long id) throws DbObjectNotFoundException {
-        final Question question = validateQuestionExistenceAndGet(id);
+        final Question question = validateQuestionExistenceAndGetWithAnswers(id);
         return questionMapper.questionToQuestionDTO(question);
     }
 
     @Override
     public Set<QuestionDTO> getAllQuestions() {
-        return questionRepository.findAll().stream()
+        return questionRepository.findAllWithAnswers().stream()
                 .map(questionMapper::questionToQuestionDTO)
                 .collect(Collectors.toSet());
     }
@@ -85,7 +85,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     @Transactional
     public void addExistingAnswer(final Long answerId, final Long questionId) throws DbObjectNotFoundException, InvalidRequestException {
-        final Question question = validateQuestionExistenceAndGet(questionId);
+        final Question question = validateQuestionExistenceAndGetWithAnswers(questionId);
         if (!requiresSpecificAnswer(question)) {
             throw new InvalidRequestException("Question of type \"" + question.getType().name().toLowerCase() +
                     "\" cannot have a specific question attached");
@@ -109,10 +109,22 @@ public class QuestionServiceImpl implements QuestionService {
     private Question validateQuestionExistenceAndGet(final Long id) throws DbObjectNotFoundException {
         final Optional<Question> question = questionRepository.findById(id);
         if (!question.isPresent()) {
-            throw new DbObjectNotFoundException(ErrorMessageFactory
-                    .createEntityObjectWithNumericIdMissingMessage(id, Question.QUESTION_TABLE_NAME));
+            throwQuestionNotFound(id);
         }
         return question.get();
+    }
+
+    private Question validateQuestionExistenceAndGetWithAnswers(final Long id) throws DbObjectNotFoundException {
+        final Optional<Question> question = questionRepository.findByIdWithAnswers(id);
+        if (!question.isPresent()) {
+            throwQuestionNotFound(id);
+        }
+        return question.get();
+    }
+
+    private void throwQuestionNotFound(final Long id) throws DbObjectNotFoundException {
+        throw new DbObjectNotFoundException(ErrorMessageFactory
+                .createEntityObjectWithNumericIdMissingMessage(id, Question.QUESTION_TABLE_NAME));
     }
 
     private Answer validateAnswerExistenceAndGet(final Long id) throws DbObjectNotFoundException {
