@@ -7,36 +7,38 @@ import java.util.*;
 
 import static com.bocian.quizzes.model.Quiz.QUIZ_TABLE_NAME;
 
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = QUIZ_TABLE_NAME)
 @Builder
-public class Quiz extends BaseEntity {
+public class Quiz {
 
     public static final String QUIZ_TABLE_NAME = "QUIZ";
-    public static final String QUIZ_ID_JOIN_COL_NAME = "QUIZ_ID";
-    public static final String PRODUCT_ID_JOIN_COL_NAME = "PRODUCT_ID";
+    public static final String QUIZ_NAME_COL_NAME = "NAME";
+    public static final String QUIZ_NAME_JOIN_COL_NAME = "QUIZ_NAME";
+    public static final String PRODUCT_NAME_JOIN_COL_NAME = "PRODUCT_NAME";
     public static final String QUIZZES_TO_PRODUCTS_TABLE_NAME = "QUIZZES_TO_PRODUCTS";
     public static final String PRODUCTS_FIELD_NAME = "products";
     public static final String LEARNING_PATH_FIELD_NAME = "learningPath";
 
-    @Column(name = "NAME", nullable = false, unique = true)
+    @Id
+    @Column(name = QUIZ_NAME_COL_NAME)
     private String name;
 
-    @OneToMany(mappedBy = Question.QUIZ_FIELD_NAME, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = Question.QUIZ_FIELD_NAME, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Question> questions = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "LEARNING_PATH_ID", referencedColumnName = BaseEntity.ID_COLUMN_NAME)
+    @JoinColumn(name = "LEARNING_PATH_NAME", referencedColumnName = LearningPath.LEARNING_PATH_TITLE_COL_NAME)
     private LearningPath learningPath;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = QUIZZES_TO_PRODUCTS_TABLE_NAME,
-            joinColumns = @JoinColumn(name = QUIZ_ID_JOIN_COL_NAME, referencedColumnName = BaseEntity.ID_COLUMN_NAME),
-            inverseJoinColumns = @JoinColumn(name = PRODUCT_ID_JOIN_COL_NAME, referencedColumnName = BaseEntity.ID_COLUMN_NAME))
+            joinColumns = @JoinColumn(name = QUIZ_NAME_JOIN_COL_NAME, referencedColumnName = QUIZ_NAME_COL_NAME),
+            inverseJoinColumns = @JoinColumn(name = PRODUCT_NAME_JOIN_COL_NAME, referencedColumnName = Product.PRODUCT_NAME_COL_NAME))
     private List<Product> products;
 
     public void setQuestions(final List<Question> questions) {

@@ -9,18 +9,20 @@ import java.util.List;
 
 import static com.bocian.quizzes.model.Product.PRODUCT_TABLE_NAME;
 
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(exclude = "quizzes")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = PRODUCT_TABLE_NAME)
 @Builder
-public class Product extends BaseEntity {
+public class Product {
 
     public static final String PRODUCT_TABLE_NAME = "PRODUCT";
+    public static final String PRODUCT_NAME_COL_NAME = "NAME";
 
-    @Column(name = "NAME", nullable = false, unique = true)
+    @Id
+    @Column(name = PRODUCT_NAME_COL_NAME)
     private String name;
 
     @Column(name = "DESCRIPTION")

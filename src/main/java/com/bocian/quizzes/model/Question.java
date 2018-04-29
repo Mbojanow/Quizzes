@@ -11,7 +11,7 @@ import java.util.Set;
 
 import static com.bocian.quizzes.model.Question.QUESTION_TABLE_NAME;
 
-@EqualsAndHashCode(callSuper = true, exclude = "answers")
+@EqualsAndHashCode(callSuper = true, exclude = {"answers", "quiz"})
 @Entity
 @Table(name = QUESTION_TABLE_NAME)
 @Data
@@ -41,11 +41,11 @@ public class Question extends BaseEntity {
     @Column(name = "TAG")
     private String tag;
 
-    @OneToMany(mappedBy = Answer.QUESTION_FIELD_NAME, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = Answer.QUESTION_FIELD_NAME, fetch = FetchType.LAZY)
     private Set<Answer> answers = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "QUIZ_ID", referencedColumnName = BaseEntity.ID_COLUMN_NAME)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "QUIZ_NAME", referencedColumnName = Quiz.QUIZ_NAME_COL_NAME)
     private Quiz quiz;
 
     public void setAnswers(final Set<Answer> answers) {

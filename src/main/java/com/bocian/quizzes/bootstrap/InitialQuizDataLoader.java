@@ -42,7 +42,7 @@ public class InitialQuizDataLoader implements DataLoader {
     @Transactional
     public void save() {
         log.info("Creating initial quizzes");
-        Optional<LearningPath> learningPath = learningPathRepository.findByTitle("Development");
+        Optional<LearningPath> learningPath = learningPathRepository.findById("Development");
         if (!learningPath.isPresent()) {
             throw new RuntimeException("Unable to find development learning path");
         }
@@ -58,7 +58,7 @@ public class InitialQuizDataLoader implements DataLoader {
                     InitialCppRelatedDataLoader.CPP_TAG);
         }
 
-        Optional<Product> product = productRepository.findByName("cpp");
+        Optional<Product> product = productRepository.findById("cpp");
         if (!product.isPresent()) {
             throw new RuntimeException("Failed to get cpp product!");
         }
@@ -80,7 +80,7 @@ public class InitialQuizDataLoader implements DataLoader {
                     InitialJavaRelatedDataLoader.JAVA_TAG);
         }
 
-        Optional<Product> product = productRepository.findByName("java");
+        Optional<Product> product = productRepository.findById("java");
         if (!product.isPresent()) {
             throw new RuntimeException("Failed to get java product!");
         }

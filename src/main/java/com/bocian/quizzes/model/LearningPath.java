@@ -9,18 +9,20 @@ import java.util.List;
 
 import static com.bocian.quizzes.model.LearningPath.LEARNING_PATH_TABLE_NAME;
 
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(exclude = "quizzes")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = LEARNING_PATH_TABLE_NAME)
 @Builder
-public class LearningPath extends BaseEntity {
+public class LearningPath {
 
     public static final String LEARNING_PATH_TABLE_NAME = "LEARNING_PATH";
+    public static final String LEARNING_PATH_TITLE_COL_NAME = "TITLE";
 
-    @Column(name = "TITLE", unique = true, nullable = false)
+    @Id
+    @Column(name = LEARNING_PATH_TITLE_COL_NAME)
     private String title;
 
     @OneToMany(mappedBy = Quiz.LEARNING_PATH_FIELD_NAME, fetch = FetchType.LAZY)
