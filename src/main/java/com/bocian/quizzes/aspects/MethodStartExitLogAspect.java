@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class MethodStartExitLogAspect {
 
-    @Around("@annotation(com.bocian.quizzes.aspects.ExecutionLogged)")
+    @Around("@annotation(com.bocian.quizzes.aspects.annotations.ExecutionLogged)")
     public Object logStartAndExit(final ProceedingJoinPoint joinPoint) throws Throwable {
         log.debug("Start of " + joinPoint.getSignature());
         final Object proceed = joinPoint.proceed();

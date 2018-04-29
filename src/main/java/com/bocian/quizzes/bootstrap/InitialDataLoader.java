@@ -1,7 +1,7 @@
 package com.bocian.quizzes.bootstrap;
 
-import com.bocian.quizzes.aspects.ExecutionLogged;
-import com.bocian.quizzes.aspects.Measured;
+import com.bocian.quizzes.aspects.annotations.ExecutionLogged;
+import com.bocian.quizzes.aspects.annotations.Measured;
 import com.bocian.quizzes.configuration.Profiles;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;

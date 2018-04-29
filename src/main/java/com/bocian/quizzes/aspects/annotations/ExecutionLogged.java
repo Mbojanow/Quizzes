@@ -1,4 +1,4 @@
-package com.bocian.quizzes.aspects;
+package com.bocian.quizzes.aspects.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,5 +7,5 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Measured {
+public @interface ExecutionLogged {
 }

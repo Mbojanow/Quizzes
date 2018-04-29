@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class MethodExecutionTimeAspect {
 
-    @Around("@annotation(Measured)")
+    @Around("@annotation(com.bocian.quizzes.aspects.annotations.Measured)")
     public Object logExecutionTime(final ProceedingJoinPoint joinPoint) throws Throwable {
 
         final long startTime = System.currentTimeMillis();
