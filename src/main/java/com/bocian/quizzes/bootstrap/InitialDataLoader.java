@@ -1,10 +1,8 @@
 package com.bocian.quizzes.bootstrap;
 
+import com.bocian.quizzes.aspects.ExecutionLogged;
+import com.bocian.quizzes.aspects.Measured;
 import com.bocian.quizzes.configuration.Profiles;
-import com.bocian.quizzes.model.Product;
-import com.bocian.quizzes.repositories.AnswerRepository;
-import com.bocian.quizzes.repositories.ProductRepository;
-import com.bocian.quizzes.repositories.QuestionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationListener;
@@ -34,6 +32,8 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 
     @Override
     @Transactional
+    @Measured
+    @ExecutionLogged
     public void onApplicationEvent(final ContextRefreshedEvent contextRefreshedEvent) {
         log.debug("Dev bootstrap started. Initializing database.");
         loaders.forEach(DataLoader::save);

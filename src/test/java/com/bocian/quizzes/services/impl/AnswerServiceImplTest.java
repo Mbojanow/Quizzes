@@ -4,6 +4,7 @@ import com.bocian.quizzes.api.v1.mapper.AnswerMapper;
 import com.bocian.quizzes.api.v1.model.AnswerDTO;
 import com.bocian.quizzes.controllers.v1.AnswerController;
 import com.bocian.quizzes.exceptions.DbObjectNotFoundException;
+import com.bocian.quizzes.exceptions.ObjectNotValidException;
 import com.bocian.quizzes.model.Answer;
 import com.bocian.quizzes.repositories.AnswerRepository;
 import com.bocian.quizzes.services.api.AnswerService;
@@ -122,7 +123,7 @@ public class AnswerServiceImplTest {
     }
 
     @Test
-    public void shouldPatchAnswerCorrectlyWhenAllFieldsAreNull() throws DbObjectNotFoundException {
+    public void shouldPatchAnswerCorrectlyWhenAllFieldsAreNull() throws DbObjectNotFoundException, ObjectNotValidException {
         final Long id = 953L;
         final AnswerDTO answerDTO = new AnswerDTO(null, null, null, null);
         final Answer answer = Answer.builder().description("SomethingDifferentThanUpdated")
@@ -137,7 +138,7 @@ public class AnswerServiceImplTest {
     }
 
     @Test(expected = DbObjectNotFoundException.class)
-    public void shouldThrowDuringPatchWhenEntityNotFound() throws DbObjectNotFoundException {
+    public void shouldThrowDuringPatchWhenEntityNotFound() throws DbObjectNotFoundException, ObjectNotValidException {
         when(answerRepository.findById(any())).thenReturn(Optional.empty());
         service.patchAnswer(1L, new AnswerDTO());
     }
