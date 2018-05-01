@@ -6,6 +6,7 @@ import com.bocian.quizzes.exceptions.DbObjectNotFoundException;
 import com.bocian.quizzes.exceptions.InvalidRequestException;
 import com.bocian.quizzes.services.api.ProductService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,25 +25,25 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ProductListDTO getAllProducts() {
-        return new ProductListDTO(productService.findAllProducts());
+        return new ProductListDTO(productService.getAllProducts());
     }
 
-    @GetMapping("/{name}")
+    @GetMapping(value = "/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ProductDTO getProductByName(@PathVariable("name") final String name) throws DbObjectNotFoundException {
         return productService.findProductByName(name);
     }
 
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ProductDTO createProduct(@Valid @RequestBody final ProductDTO productDTO) throws InvalidRequestException {
         return productService.createProduct(productDTO);
     }
 
-    @PutMapping("/{name}")
+    @PutMapping(value = "/{name}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ProductDTO updateProduct(@PathVariable("name") final String name,
                                     @Valid @RequestBody final ProductDTO productDTO) throws DbObjectNotFoundException {

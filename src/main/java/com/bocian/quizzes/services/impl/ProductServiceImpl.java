@@ -10,6 +10,9 @@ import com.bocian.quizzes.model.Product;
 import com.bocian.quizzes.repositories.ProductRepository;
 import com.bocian.quizzes.services.api.ProductService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,9 +41,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDTO> findAllProducts() {
+    public List<ProductDTO> getAllProducts() {
         log.debug("All products requested");
         return productRepository.findAll()
+                .stream().map(productMapper::productToProductDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductDTO> getProducts(final int page, final int size) {
+        log.debug("Requesting products");
+        return productRepository.findAll(PageRequest.of(page, size))
                 .stream().map(productMapper::productToProductDTO)
                 .collect(Collectors.toList());
     }

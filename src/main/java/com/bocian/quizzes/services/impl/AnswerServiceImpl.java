@@ -6,11 +6,13 @@ import com.bocian.quizzes.exceptions.DbObjectNotFoundException;
 import com.bocian.quizzes.exceptions.ErrorMessageFactory;
 import com.bocian.quizzes.exceptions.ObjectNotValidException;
 import com.bocian.quizzes.model.Answer;
+import com.bocian.quizzes.model.BaseEntity;
 import com.bocian.quizzes.repositories.AnswerRepository;
 import com.bocian.quizzes.services.api.AnswerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -96,6 +98,7 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     public List<AnswerDTO> getUnassignedToQuestion() {
+        log.debug("Requested answers without question");
         return answerRepository.findByQuestion(null).stream()
                 .map(answerMapper::answerToAnswerDTO)
                 .collect(Collectors.toList());

@@ -54,7 +54,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public Set<QuestionDTO> getQuestions(int page, int size) {
+    public Set<QuestionDTO> getQuestions(final int page, final int size) {
         log.debug("Requesting questions");
         return questionRepository.findAllWithAnswers(PageRequest.of(page, size)).stream()
                 .map(questionMapper::questionToQuestionDTO)
