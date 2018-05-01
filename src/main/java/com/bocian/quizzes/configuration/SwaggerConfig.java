@@ -24,6 +24,7 @@ public class SwaggerConfig {
                 .paths(PathSelectors.any())
                 .build()
                 .pathMapping("/")
+                .enableUrlTemplating(false)
                 .apiInfo(createMetadata());
     }
 

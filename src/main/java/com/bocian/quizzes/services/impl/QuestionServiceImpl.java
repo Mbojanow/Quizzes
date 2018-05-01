@@ -8,6 +8,7 @@ import com.bocian.quizzes.exceptions.ErrorMessageFactory;
 import com.bocian.quizzes.exceptions.InvalidRequestException;
 import com.bocian.quizzes.exceptions.ObjectNotValidException;
 import com.bocian.quizzes.model.Answer;
+import com.bocian.quizzes.model.BaseEntity;
 import com.bocian.quizzes.model.Question;
 import com.bocian.quizzes.repositories.AnswerRepository;
 import com.bocian.quizzes.repositories.QuestionRepository;
@@ -15,6 +16,7 @@ import com.bocian.quizzes.services.api.QuestionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,7 +58,8 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public Set<QuestionDTO> getQuestions(final int page, final int size) {
         log.debug("Requesting questions");
-        return questionRepository.findAllWithAnswers(PageRequest.of(page, size)).stream()
+        return questionRepository.findAllWithAnswers(PageRequest.of(page, size,
+                Sort.Direction.ASC, BaseEntity.ID_PROPERTY)).stream()
                 .map(questionMapper::questionToQuestionDTO)
                 .collect(Collectors.toSet());
     }

@@ -24,12 +24,6 @@ public class AnswerController {
         this.answerService = answerService;
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public AnswerListDTO getAllAnswers() {
-        return new AnswerListDTO(answerService.getAllAnswers());
-    }
-
     @GetMapping(params = {"page", "size"}, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public AnswerListDTO getAnswers(@RequestParam(value = "page") final int page,

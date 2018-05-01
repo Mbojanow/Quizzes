@@ -32,16 +32,10 @@ public class QuestionController {
         return questionService.getQuestionById(id);
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public QuestionSetDTO getAllQuestions() {
-        return new QuestionSetDTO(questionService.getAllQuestions());
-    }
-
     @GetMapping(params = {"page", "size"}, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public QuestionSetDTO getQuestions(@RequestParam(value = "page") final int page,
-                                    @RequestParam(value = "size") final int size) {
+                                       @RequestParam(value = "size") final int size) {
         return new QuestionSetDTO(questionService.getQuestions(page, size));
     }
 

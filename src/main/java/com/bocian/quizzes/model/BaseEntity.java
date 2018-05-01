@@ -12,6 +12,7 @@ import java.io.Serializable;
 public abstract class BaseEntity implements Serializable {
 
     public static final String ID_COLUMN_NAME = "ID";
+    public static final String ID_PROPERTY = "id";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

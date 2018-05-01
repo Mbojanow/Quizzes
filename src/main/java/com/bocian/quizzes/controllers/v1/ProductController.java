@@ -25,10 +25,10 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public ProductListDTO getAllProducts() {
-        return new ProductListDTO(productService.getAllProducts());
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, params = {"page", "size"})
+    public ProductListDTO getProduct(@RequestParam(value = "page") final int page,
+                                     @RequestParam(value = "size") final int size) {
+        return new ProductListDTO(productService.getProducts(page, size));
     }
 
     @GetMapping(value = "/{name}", produces = MediaType.APPLICATION_JSON_VALUE)

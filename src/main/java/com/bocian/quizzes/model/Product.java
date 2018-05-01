@@ -21,6 +21,7 @@ public class Product {
 
     public static final String PRODUCT_TABLE_NAME = "PRODUCT";
     public static final String PRODUCT_NAME_COL_NAME = "NAME";
+    public static final String NAME_PROPERTY = "name";
 
     @Id
     @Column(name = PRODUCT_NAME_COL_NAME)
