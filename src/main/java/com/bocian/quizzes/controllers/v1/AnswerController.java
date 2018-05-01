@@ -30,6 +30,13 @@ public class AnswerController {
         return new AnswerListDTO(answerService.getAllAnswers());
     }
 
+    @GetMapping(params = {"page", "size"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public AnswerListDTO getAnswers(@RequestParam(value = "page") final int page,
+                                    @RequestParam(value = "size") final int size) {
+        return new AnswerListDTO(answerService.getAnswers(page, size));
+    }
+
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public AnswerDTO getAnswer(@PathVariable("id") final Long id) throws DbObjectNotFoundException {

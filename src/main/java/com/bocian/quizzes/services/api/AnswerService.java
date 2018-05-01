@@ -12,6 +12,8 @@ public interface AnswerService {
 
     List<AnswerDTO> getAllAnswers();
 
+    List<AnswerDTO> getAnswers(int page, int size);
+
     AnswerDTO createNewAnswer(AnswerDTO answerDTO);
 
     AnswerDTO saveAnswer(Long id, AnswerDTO answerDTO) throws DbObjectNotFoundException;

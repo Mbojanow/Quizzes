@@ -9,6 +9,8 @@ import com.bocian.quizzes.model.Answer;
 import com.bocian.quizzes.repositories.AnswerRepository;
 import com.bocian.quizzes.services.api.AnswerService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +41,14 @@ public class AnswerServiceImpl implements AnswerService {
     public List<AnswerDTO> getAllAnswers() {
         log.debug("All answers requested");
         return answerRepository.findAll()
+                .stream()
+                .map(answerMapper::answerToAnswerDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AnswerDTO> getAnswers(final int page, final int size) {
+        return answerRepository.findAll(PageRequest.of(page, size))
                 .stream()
                 .map(answerMapper::answerToAnswerDTO)
                 .collect(Collectors.toList());

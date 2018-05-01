@@ -43,4 +43,11 @@ public class RestExceptionHandler {
         log.debug("InvalidRequestException. Details: {}", exception);
         return new RestCallErrorMessage("Invalid request. " + exception.getMessage());
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public RestCallErrorMessage handleIllegalArgumentException(final Exception exception) {
+        log.debug("IllegalArgumentException. Details: {}", exception);
+        return new RestCallErrorMessage("Invalid argument in request. " + exception.getMessage());
+    }
 }

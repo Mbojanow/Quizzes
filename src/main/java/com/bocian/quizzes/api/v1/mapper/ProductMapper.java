@@ -1,6 +1,7 @@
 package com.bocian.quizzes.api.v1.mapper;
 
 import com.bocian.quizzes.api.v1.model.ProductDTO;
+import com.bocian.quizzes.controllers.v1.ProductController;
 import com.bocian.quizzes.model.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -11,5 +12,17 @@ public interface ProductMapper {
 
     Product productDTOToProduct(ProductDTO productDTO);
 
-    ProductDTO productToProductDTO(final Product product);
+    default ProductDTO productToProductDTO(final Product product) {
+        if (product == null) {
+            return null;
+        }
+
+        ProductDTO productDTO = new ProductDTO();
+
+        productDTO.setName(product.getName());
+        productDTO.setDescription(product.getDescription());
+        productDTO.setUrl(ProductController.PRODUCTS_BASE_URL + "/" + product.getName());
+
+        return productDTO;
+    }
 }
