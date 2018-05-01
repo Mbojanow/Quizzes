@@ -48,6 +48,7 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     public List<AnswerDTO> getAnswers(final int page, final int size) {
+        log.debug("Requesting answers");
         return answerRepository.findAll(PageRequest.of(page, size))
                 .stream()
                 .map(answerMapper::answerToAnswerDTO)

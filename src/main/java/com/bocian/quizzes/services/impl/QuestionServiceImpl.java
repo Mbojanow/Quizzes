@@ -13,6 +13,8 @@ import com.bocian.quizzes.repositories.AnswerRepository;
 import com.bocian.quizzes.repositories.QuestionRepository;
 import com.bocian.quizzes.services.api.QuestionService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,6 +49,14 @@ public class QuestionServiceImpl implements QuestionService {
     public Set<QuestionDTO> getAllQuestions() {
         log.debug("All questions requested");
         return questionRepository.findAllWithAnswers().stream()
+                .map(questionMapper::questionToQuestionDTO)
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<QuestionDTO> getQuestions(int page, int size) {
+        log.debug("Requesting questions");
+        return questionRepository.findAllWithAnswers(PageRequest.of(page, size)).stream()
                 .map(questionMapper::questionToQuestionDTO)
                 .collect(Collectors.toSet());
     }

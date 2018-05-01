@@ -38,6 +38,13 @@ public class QuestionController {
         return new QuestionSetDTO(questionService.getAllQuestions());
     }
 
+    @GetMapping(params = {"page", "size"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public QuestionSetDTO getQuestions(@RequestParam(value = "page") final int page,
+                                    @RequestParam(value = "size") final int size) {
+        return new QuestionSetDTO(questionService.getQuestions(page, size));
+    }
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public QuestionDTO createQuestion(@Valid @RequestBody final QuestionDTO questionDTO) {

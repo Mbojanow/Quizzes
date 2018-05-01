@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
+import java.util.Arrays;
+
 @RestControllerAdvice
 @Slf4j
 public class RestExceptionHandler {
@@ -26,8 +28,18 @@ public class RestExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public RestCallErrorMessage handleNumberFormatException(final Exception exception, final WebRequest request) {
         log.debug("NumberFormatException occurred. Details: {}", exception);
-        return new RestCallErrorMessage("Failed to convert value to number. Check your request and the requested path: "
-                + request.getDescription(false));
+        final StringBuilder errorMsgBuilder = new StringBuilder(200);
+        errorMsgBuilder.append("Failed to convert value to number. Check your request body, requested path: ")
+                .append(request.getDescription(false));
+
+        if (!request.getParameterMap().isEmpty()) {
+            errorMsgBuilder.append(" and check request parameters: ");
+            request.getParameterMap().forEach((paramName, paramValue)
+                    -> errorMsgBuilder.append(paramName).append(": ").append(Arrays.toString(paramValue))
+                    .append(" "));
+        }
+
+        return new RestCallErrorMessage(errorMsgBuilder.toString());
     }
 
     @ExceptionHandler(ObjectNotValidException.class)

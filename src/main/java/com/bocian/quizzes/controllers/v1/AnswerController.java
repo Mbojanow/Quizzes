@@ -24,7 +24,7 @@ public class AnswerController {
         this.answerService = answerService;
     }
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public AnswerListDTO getAllAnswers() {
         return new AnswerListDTO(answerService.getAllAnswers());
