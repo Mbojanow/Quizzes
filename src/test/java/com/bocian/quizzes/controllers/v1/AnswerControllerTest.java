@@ -44,15 +44,18 @@ public class AnswerControllerTest {
 
     @Test
     public void shouldGetOkWhenGettingAllAnswers() throws Exception {
+        final int page = 0;
+        final int size = 3;
         final String expectedResponseValue = "{\"answers\":[{\"id\":1,\"description\":\"desc\",\"is_correct\":true," +
                 "\"answer_url\":null},{\"id\":2,\"description\":\"desc2\",\"is_correct\":false,\"answer_url\":null}," +
                 "{\"id\":3,\"description\":\"desc3\",\"is_correct\":false,\"answer_url\":\"someurl\"}]}";
-        when(answerService.getAnswers(0, 4)).thenReturn(Arrays.asList(
+        when(answerService.getAnswers(page, size)).thenReturn(Arrays.asList(
                 new AnswerDTO(1L, "desc", true, null),
                 new AnswerDTO(2L, "desc2", false, null),
                 new AnswerDTO(3L, "desc3", false, "someurl")));
 
-        final MvcResult result = mockMvc.perform(get(AnswerController.ANSWERS_BASE_URL + "?page=0&size=4")
+        final MvcResult result = mockMvc.perform(get(AnswerController.ANSWERS_BASE_URL
+                + PageRequestParamsFactory.get(page, size))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.answers", hasSize(3))).andReturn();

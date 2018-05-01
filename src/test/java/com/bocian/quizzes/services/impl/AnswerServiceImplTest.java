@@ -12,6 +12,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -47,7 +50,20 @@ public class AnswerServiceImplTest {
         final List<AnswerDTO> answerDTOs = service.getAllAnswers();
         assertEquals(2, answerDTOs.size());
         answerDTOs.forEach(answerDTO -> assertEquals(getAnswerUrl(answerDTO.getId()), answerDTO.getUrl()));
+    }
 
+    @Test
+    @SuppressWarnings("unchecked")
+    public void shouldGetAllAnswersFromPageWithCorrectUrl() {
+        final Answer answer1 = Answer.builder().isCorrect(false).description("ans1").build();
+        answer1.setId(1L);
+        final Answer answer2 = Answer.builder().isCorrect(false).description("ans2").build();
+        answer2.setId(2L);
+        Page page = new PageImpl(Arrays.asList(answer1, answer2));
+        when(answerRepository.findAll(any(Pageable.class))).thenReturn(page);
+        final List<AnswerDTO> answerDTOs = service.getAnswers(0, 2);
+        assertEquals(2, answerDTOs.size());
+        answerDTOs.forEach(answerDTO -> assertEquals(getAnswerUrl(answerDTO.getId()), answerDTO.getUrl()));
     }
 
     @Test
