@@ -12,6 +12,7 @@ import java.util.Set;
 import static com.bocian.quizzes.model.Question.QUESTION_TABLE_NAME;
 
 @EqualsAndHashCode(callSuper = true, exclude = {"answers", "quiz"})
+@ToString(callSuper = true, of = {"type", "durationMinutes", "difficulty", "description", "tag"})
 @Entity
 @Table(name = QUESTION_TABLE_NAME)
 @Data

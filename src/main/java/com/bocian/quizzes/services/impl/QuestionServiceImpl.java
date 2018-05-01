@@ -12,6 +12,7 @@ import com.bocian.quizzes.model.Question;
 import com.bocian.quizzes.repositories.AnswerRepository;
 import com.bocian.quizzes.repositories.QuestionRepository;
 import com.bocian.quizzes.services.api.QuestionService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class QuestionServiceImpl implements QuestionService {
 
     private final QuestionRepository questionRepository;
@@ -37,11 +39,13 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public QuestionDTO getQuestionById(Long id) throws DbObjectNotFoundException {
         final Question question = validateQuestionExistenceAndGetWithAnswers(id);
+        log.debug("Question with id " + id + " requested");
         return questionMapper.questionToQuestionDTO(question);
     }
 
     @Override
     public Set<QuestionDTO> getAllQuestions() {
+        log.debug("All questions requested");
         return questionRepository.findAllWithAnswers().stream()
                 .map(questionMapper::questionToQuestionDTO)
                 .collect(Collectors.toSet());
@@ -52,6 +56,7 @@ public class QuestionServiceImpl implements QuestionService {
     public QuestionDTO createQuestion(final QuestionDTO questionDTO) {
         final Question questionToInsert = questionMapper.questionDTOToQuestion(questionDTO);
         questionToInsert.setId(null);
+        log.debug("Creating new question");
         return questionMapper.questionToQuestionDTO(questionRepository.save(questionToInsert));
     }
 
@@ -61,6 +66,7 @@ public class QuestionServiceImpl implements QuestionService {
         validateQuestionExistenceAndGet(id);
         final Question updatedQuestion = questionMapper.questionDTOToQuestion(questionDTO);
         updatedQuestion.setId(id);
+        log.debug("Updating question with id " + id);
         return questionMapper.questionToQuestionDTO(questionRepository.save(updatedQuestion));
     }
 
@@ -72,6 +78,7 @@ public class QuestionServiceImpl implements QuestionService {
         final Question updatedQuestion = questionRepository
                 .save(questionMapper.updateQuestionFromQuestionDTO(questionDTO, question));
         updatedQuestion.setId(id);
+        log.debug("Partially updating question with id " + id);
         return questionMapper.questionToQuestionDTO(updatedQuestion);
     }
 
@@ -79,6 +86,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Transactional
     public void deleteQuestion(final Long id) throws DbObjectNotFoundException {
         final Question question = validateQuestionExistenceAndGet(id);
+        log.debug("Deleting question with id " + id);
         questionRepository.delete(question);
     }
 
@@ -102,6 +110,7 @@ public class QuestionServiceImpl implements QuestionService {
             throw new InvalidRequestException("Single choice answer can have only one correct answer");
         }
 
+        log.debug("Adding answer " + answer + " to question " + questionId);
         question.addAnswer(answer);
         questionRepository.save(question);
     }
@@ -124,14 +133,14 @@ public class QuestionServiceImpl implements QuestionService {
 
     private void throwQuestionNotFound(final Long id) throws DbObjectNotFoundException {
         throw new DbObjectNotFoundException(ErrorMessageFactory
-                .createEntityObjectWithNumericIdMissingMessage(id, Question.QUESTION_TABLE_NAME));
+                .createEntityObjectWithIdMissingMessage(id, Question.QUESTION_TABLE_NAME));
     }
 
     private Answer validateAnswerExistenceAndGet(final Long id) throws DbObjectNotFoundException {
         final Optional<Answer> answer = answerRepository.findById(id);
         if (!answer.isPresent()) {
             throw new DbObjectNotFoundException(ErrorMessageFactory
-                    .createEntityObjectWithNumericIdMissingMessage(id, Answer.ANSWER_TABLE_NAME));
+                    .createEntityObjectWithIdMissingMessage(id, Answer.ANSWER_TABLE_NAME));
         }
         return answer.get();
     }

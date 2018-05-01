@@ -31,7 +31,7 @@ public class AnswerServiceImpl implements AnswerService {
     @Override
     public AnswerDTO getAnswerById(final Long id) throws DbObjectNotFoundException {
         final Answer answer = validateExistenceAndGet(id);
-        log.debug("Answer by id " + id + " requested");
+        log.debug("Answer with id " + id + " requested");
         return answerMapper.answerToAnswerDTO(answer);
     }
 
@@ -94,7 +94,7 @@ public class AnswerServiceImpl implements AnswerService {
         final Optional<Answer> answer = answerRepository.findById(id);
         if (!answer.isPresent()) {
             throw new DbObjectNotFoundException(ErrorMessageFactory
-                    .createEntityObjectWithNumericIdMissingMessage(id, Answer.ANSWER_TABLE_NAME));
+                    .createEntityObjectWithIdMissingMessage(id, Answer.ANSWER_TABLE_NAME));
         }
         return answer.get();
     }

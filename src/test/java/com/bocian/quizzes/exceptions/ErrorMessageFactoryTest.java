@@ -9,6 +9,6 @@ public class ErrorMessageFactoryTest {
     @Test
     public void shouldCreateExpectedMessage() {
         assertEquals("Failed to find QWERTY with id 1",
-                ErrorMessageFactory.createEntityObjectWithNumericIdMissingMessage(1L, "QWERTY"));
+                ErrorMessageFactory.createEntityObjectWithIdMissingMessage(1L, "QWERTY"));
     }
 }

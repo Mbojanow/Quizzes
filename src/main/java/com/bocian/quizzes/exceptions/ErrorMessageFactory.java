@@ -6,7 +6,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ErrorMessageFactory {
 
-    public static String createEntityObjectWithNumericIdMissingMessage(final Long id, final String objName) {
+    public static String createEntityObjectWithIdMissingMessage(final Long id, final String objName) {
+        return "Failed to find " + objName + " with id " + id;
+    }
+
+    public static String createEntityObjectWithIdMissingMessage(final String id, final String objName) {
         return "Failed to find " + objName + " with id " + id;
     }
 }

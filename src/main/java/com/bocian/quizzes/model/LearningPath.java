@@ -10,6 +10,7 @@ import java.util.List;
 import static com.bocian.quizzes.model.LearningPath.LEARNING_PATH_TABLE_NAME;
 
 @EqualsAndHashCode(exclude = "quizzes")
+@ToString(exclude = "quizzes")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

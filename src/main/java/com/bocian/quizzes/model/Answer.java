@@ -7,7 +7,7 @@ import javax.persistence.*;
 import static com.bocian.quizzes.model.Answer.ANSWER_TABLE_NAME;
 
 @EqualsAndHashCode(callSuper = true, exclude = "question")
-@ToString(of = {"description", "isCorrect"})
+@ToString(of = {"description", "isCorrect"}, callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
