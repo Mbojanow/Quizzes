@@ -159,6 +159,19 @@ public class AnswerServiceImplTest {
         service.patchAnswer(1L, new AnswerDTO());
     }
 
+    @Test
+    public void shouldGetUnassignedToQuestion() {
+        final String description = "HelloDescription";
+        final Boolean correct = true;
+        when(answerRepository.findByQuestion(null)).thenReturn(Collections.singletonList(Answer.builder()
+                .description(description).isCorrect(correct).question(null).build()));
+        final List<AnswerDTO> answersDTO = service.getUnassignedToQuestion();
+
+        assertEquals(1, answersDTO.size());
+        assertEquals(description, answersDTO.get(0).getDescription());
+        assertEquals(correct, answersDTO.get(0).getIsCorrect());
+    }
+
     private String getAnswerUrl(final Long id) {
         return AnswerController.ANSWERS_BASE_URL + "/" + id;
     }
