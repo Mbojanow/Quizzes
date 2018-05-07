@@ -13,4 +13,7 @@ public class PageRequestParamsFactory {
     public static String getAll() {
         return "?page=0&size=" + Integer.MAX_VALUE;
     }
+
+    public static String getWithDefaults() {
+        return "?page=&size="; }
 }
