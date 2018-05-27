@@ -1,5 +1,6 @@
 package com.bocian.quizzes.controllers.v1;
 
+import com.bocian.quizzes.api.v1.model.QuestionSetDTO;
 import com.bocian.quizzes.api.v1.model.QuizDTO;
 import com.bocian.quizzes.api.v1.model.QuizListDTO;
 import com.bocian.quizzes.exceptions.DbObjectNotFoundException;
@@ -33,5 +34,11 @@ public class QuizController {
     @ResponseStatus(HttpStatus.OK)
     public QuizDTO getQuizByName(@PathVariable("name") final String name) throws DbObjectNotFoundException {
         return quizService.getQuizByName(name);
+    }
+
+    @GetMapping("/{name}/questions")
+    @ResponseStatus(HttpStatus.OK)
+    public QuestionSetDTO getQuizsQuestions(@PathVariable("name") final String name) throws DbObjectNotFoundException {
+        return new QuestionSetDTO(quizService.getQuestionsForQuiz(name));
     }
 }
