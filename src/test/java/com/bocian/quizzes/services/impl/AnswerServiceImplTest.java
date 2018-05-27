@@ -4,6 +4,7 @@ import com.bocian.quizzes.api.v1.mapper.AnswerMapper;
 import com.bocian.quizzes.api.v1.model.AnswerDTO;
 import com.bocian.quizzes.controllers.v1.AnswerController;
 import com.bocian.quizzes.exceptions.DbObjectNotFoundException;
+import com.bocian.quizzes.exceptions.InvalidRequestException;
 import com.bocian.quizzes.exceptions.ObjectNotValidException;
 import com.bocian.quizzes.model.Answer;
 import com.bocian.quizzes.repositories.AnswerRepository;
@@ -127,13 +128,13 @@ public class AnswerServiceImplTest {
     }
 
     @Test
-    public void shouldDeleteFoundAnswer() throws DbObjectNotFoundException {
+    public void shouldDeleteFoundAnswer() throws DbObjectNotFoundException, InvalidRequestException {
         when(answerRepository.findById(any())).thenReturn(Optional.of(new Answer()));
         service.deleteAnswerById(1L);
     }
 
     @Test(expected = DbObjectNotFoundException.class)
-    public void shouldThrowDuringDeleteWhenEntityNotFound() throws DbObjectNotFoundException {
+    public void shouldThrowDuringDeleteWhenEntityNotFound() throws DbObjectNotFoundException, InvalidRequestException {
         when(answerRepository.findById(any())).thenReturn(Optional.empty());
         service.deleteAnswerById(1L);
     }

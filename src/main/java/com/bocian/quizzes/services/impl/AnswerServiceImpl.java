@@ -4,6 +4,7 @@ import com.bocian.quizzes.api.v1.mapper.AnswerMapper;
 import com.bocian.quizzes.api.v1.model.AnswerDTO;
 import com.bocian.quizzes.exceptions.DbObjectNotFoundException;
 import com.bocian.quizzes.exceptions.ErrorMessageFactory;
+import com.bocian.quizzes.exceptions.InvalidRequestException;
 import com.bocian.quizzes.exceptions.ObjectNotValidException;
 import com.bocian.quizzes.model.Answer;
 import com.bocian.quizzes.model.BaseEntity;
@@ -90,8 +91,11 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     @Transactional
-    public void deleteAnswerById(final Long id) throws DbObjectNotFoundException {
+    public void deleteAnswerById(final Long id) throws DbObjectNotFoundException, InvalidRequestException {
         final Answer answer = validateExistenceAndGet(id);
+        if (answer.getQuestion() != null) {
+            throw new InvalidRequestException("Cannot delete an answer assigned to a question");
+        }
         log.debug("Deleting answer with id: " + id);
         answerRepository.delete(answer);
     }

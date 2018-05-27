@@ -99,6 +99,7 @@ public class QuestionServiceImpl implements QuestionService {
     public void deleteQuestion(final Long id) throws DbObjectNotFoundException {
         final Question question = validateQuestionExistenceAndGet(id);
         log.debug("Deleting question with id " + id);
+        question.setQuiz(null);
         questionRepository.delete(question);
     }
 

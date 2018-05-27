@@ -42,7 +42,7 @@ public class Question extends BaseEntity {
     @Column(name = "TAG")
     private String tag;
 
-    @OneToMany(mappedBy = Answer.QUESTION_FIELD_NAME, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = Answer.QUESTION_FIELD_NAME, fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<Answer> answers = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

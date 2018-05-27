@@ -3,6 +3,7 @@ package com.bocian.quizzes.controllers.v1;
 import com.bocian.quizzes.api.v1.model.AnswerDTO;
 import com.bocian.quizzes.api.v1.model.AnswerListDTO;
 import com.bocian.quizzes.exceptions.DbObjectNotFoundException;
+import com.bocian.quizzes.exceptions.InvalidRequestException;
 import com.bocian.quizzes.exceptions.ObjectNotValidException;
 import com.bocian.quizzes.model.Answer;
 import com.bocian.quizzes.services.api.AnswerService;
@@ -24,7 +25,7 @@ public class AnswerController {
 
     private final AnswerService answerService;
 
-    public AnswerController(AnswerService answerService) {
+    public AnswerController(final AnswerService answerService) {
         this.answerService = answerService;
     }
 
@@ -77,10 +78,11 @@ public class AnswerController {
         return answerService.patchAnswer(id, answerDTO);
     }
 
-    @ApiOperation("Delete an existing answer")
+    @ApiOperation("Delete an existing answer not assigned to any question.")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteAnswer(@PathVariable("id") final Long id) throws DbObjectNotFoundException {
+    public void deleteAnswer(@PathVariable("id") final Long id)
+            throws DbObjectNotFoundException, InvalidRequestException {
         answerService.deleteAnswerById(id);
     }
 }
