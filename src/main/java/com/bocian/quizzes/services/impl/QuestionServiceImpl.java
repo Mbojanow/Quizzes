@@ -131,6 +131,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
+    @Transactional
     public void removeExistingAnswer(Long answerId, Long questionId)
             throws DbObjectNotFoundException, InvalidRequestException {
         final Question question = validateQuestionExistenceAndGetWithAnswers(questionId);
