@@ -32,7 +32,7 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     public List<QuizDTO> getAllQuizzes() {
-        return quizRepository.findAll().stream().map(quizMapper::quizToQuizDTO).collect(Collectors.toList());
+        return quizRepository.getQuizWithLearningPathAndProducts().stream().map(quizMapper::quizToQuizDTO).collect(Collectors.toList());
     }
 
     @Override

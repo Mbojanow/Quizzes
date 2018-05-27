@@ -17,4 +17,10 @@ public class QuizDTO {
     @NotNull(message = "Quiz's name cannot be null")
     @Length(min = 5, message = "Quiz's name has to be at least 5 characters long")
     private String name;
+
+    @Valid
+    private LearningPathDTO learningPath;
+
+    @Valid
+    private List<ProductDTO> products;
 }
