@@ -84,7 +84,8 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     @Transactional
-    public QuestionDTO patchQuestion(final Long id, final QuestionDTO questionDTO) throws DbObjectNotFoundException, ObjectNotValidException {
+    public QuestionDTO patchQuestion(final Long id, final QuestionDTO questionDTO)
+            throws DbObjectNotFoundException, ObjectNotValidException {
         final Question question = validateQuestionExistenceAndGet(id);
         questionDTO.setId(id);
         final Question updatedQuestion = questionRepository
@@ -105,7 +106,8 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     @Transactional
-    public void addExistingAnswer(final Long answerId, final Long questionId) throws DbObjectNotFoundException, InvalidRequestException {
+    public void addExistingAnswer(final Long answerId, final Long questionId)
+            throws DbObjectNotFoundException, InvalidRequestException {
         final Question question = validateQuestionExistenceAndGetWithAnswers(questionId);
         if (!requiresSpecificAnswer(question)) {
             throw new InvalidRequestException("Question of type \"" + question.getType().name().toLowerCase() +
@@ -125,6 +127,20 @@ public class QuestionServiceImpl implements QuestionService {
 
         log.debug("Adding answer " + answer + " to question " + questionId);
         question.addAnswer(answer);
+        questionRepository.save(question);
+    }
+
+    @Override
+    public void removeExistingAnswer(Long answerId, Long questionId)
+            throws DbObjectNotFoundException, InvalidRequestException {
+        final Question question = validateQuestionExistenceAndGetWithAnswers(questionId);
+        final Answer answer = validateAnswerExistenceAndGet(answerId);
+        if (!question.getAnswers().contains(answer)) {
+            throw new InvalidRequestException("Answer with id " + answerId +
+                    " is not an option for question with id " + questionId);
+        }
+
+        question.removeAnswer(answer);
         questionRepository.save(question);
     }
 

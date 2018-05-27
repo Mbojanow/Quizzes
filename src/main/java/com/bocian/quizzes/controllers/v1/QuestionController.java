@@ -88,6 +88,16 @@ public class QuestionController {
         questionService.addExistingAnswer(answerId, questionId);
     }
 
+    @ApiOperation(value = "Remove existing answer from a question")
+    @DeleteMapping(value = "/{questionId}/answers/{answerId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removeAnswerFromQuestion(@PathVariable("questionId") final Long questionId,
+                                         @PathVariable("answerId") final Long answerId)
+            throws DbObjectNotFoundException, InvalidRequestException {
+        questionService.removeExistingAnswer(answerId, questionId);
+    }
+
+
     private void detachAnswers(final QuestionDTO questionDTO) {
         if (questionDTO.getAnswers() != null) {
             questionDTO.getAnswers().forEach(answerDTO -> answerDTO.setId(null));

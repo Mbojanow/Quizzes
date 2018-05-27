@@ -25,4 +25,6 @@ public interface QuestionService {
     void deleteQuestion(Long id) throws DbObjectNotFoundException;
 
     void addExistingAnswer(Long answerId, Long questionId) throws DbObjectNotFoundException, InvalidRequestException;
+
+    void removeExistingAnswer(Long answerId, Long questionId) throws DbObjectNotFoundException, InvalidRequestException;
 }

@@ -42,7 +42,7 @@ public class Question extends BaseEntity {
     @Column(name = "TAG")
     private String tag;
 
-    @OneToMany(mappedBy = Answer.QUESTION_FIELD_NAME, fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = Answer.QUESTION_FIELD_NAME, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Answer> answers = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -63,6 +63,12 @@ public class Question extends BaseEntity {
         // answers can be null if Question was created by lombok's builder
         createEmptyAnswersIfNull();
         answers.add(answer);
+    }
+
+    public void removeAnswer(final Answer answer) {
+        answer.setQuestion(null);
+        createEmptyAnswersIfNull();
+        answers.remove(answer);
     }
 
     public void addAnswers(final Collection<Answer> answersToQuestion) {
