@@ -14,5 +14,8 @@ public interface QuizRepository extends JpaRepository<Quiz, String> {
     Optional<Quiz> getQuizByNameWithQuestions(@Param("name") String name);
 
     @Query("select q from Quiz q left join fetch q.learningPath left join fetch q.products")
-    List<Quiz> getQuizWithLearningPathAndProducts();
+    List<Quiz> getQuizzesWithLearningPathAndProducts();
+
+    @Query("select q from Quiz q left join fetch q.learningPath left join fetch q.products where q.name = :name")
+    Optional<Quiz> getQuizByNameWithLearningPathAndProducts(@Param("name") String name);
 }

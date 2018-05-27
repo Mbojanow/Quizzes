@@ -32,15 +32,16 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     public List<QuizDTO> getAllQuizzes() {
-        return quizRepository.getQuizWithLearningPathAndProducts().stream().map(quizMapper::quizToQuizDTO).collect(Collectors.toList());
+        return quizRepository.getQuizzesWithLearningPathAndProducts().stream()
+                .map(quizMapper::quizToQuizDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
     public QuizDTO getQuizByName(String name) throws DbObjectNotFoundException {
-        final Optional<Quiz> quiz = quizRepository.findById(name);
+        final Optional<Quiz> quiz = quizRepository.getQuizByNameWithLearningPathAndProducts(name);
         if (!quiz.isPresent()) {
-            throw new DbObjectNotFoundException(ErrorMessageFactory
-                    .createEntityObjectWithIdMissingMessage(name, Quiz.QUIZ_TABLE_NAME));
+            throwQuizNotFound(name);
         }
         return quizMapper.quizToQuizDTO(quiz.get());
     }
@@ -49,9 +50,13 @@ public class QuizServiceImpl implements QuizService {
     public Set<QuestionDTO> getQuestionsForQuiz(String quizName) throws DbObjectNotFoundException {
         Optional<Quiz> quizWithQuestions = quizRepository.getQuizByNameWithQuestions(quizName);
         if (!quizWithQuestions.isPresent()) {
-            throw new DbObjectNotFoundException(ErrorMessageFactory
-                    .createEntityObjectWithIdMissingMessage(quizName, Quiz.QUIZ_TABLE_NAME));
+            throwQuizNotFound(quizName);
         }
         return quizWithQuestions.get().getQuestions().stream().map(questionMapper::questionToQuestionDTO).collect(Collectors.toSet());
+    }
+
+    private void throwQuizNotFound(final String lookupName) throws DbObjectNotFoundException {
+        throw new DbObjectNotFoundException(ErrorMessageFactory
+                .createEntityObjectWithIdMissingMessage(lookupName, Quiz.QUIZ_TABLE_NAME));
     }
 }
