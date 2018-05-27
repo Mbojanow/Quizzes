@@ -125,7 +125,7 @@ public class QuestionServiceImpl implements QuestionService {
             throw new InvalidRequestException("Single choice answer can have only one correct answer");
         }
 
-        log.debug("Adding answer " + answer + " to question " + questionId);
+        log.debug("Adding answer " + answerId + " to question " + questionId);
         question.addAnswer(answer);
         questionRepository.save(question);
     }
@@ -141,6 +141,7 @@ public class QuestionServiceImpl implements QuestionService {
                     " is not an option for question with id " + questionId);
         }
 
+        log.debug("Removing answer " + answerId + " from question " + questionId);
         question.removeAnswer(answer);
         questionRepository.save(question);
     }

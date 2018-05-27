@@ -6,10 +6,12 @@ import com.bocian.quizzes.api.v1.model.QuestionDTO;
 import com.bocian.quizzes.api.v1.model.QuizDTO;
 import com.bocian.quizzes.exceptions.DbObjectNotFoundException;
 import com.bocian.quizzes.exceptions.ErrorMessageFactory;
+import com.bocian.quizzes.exceptions.InvalidRequestException;
 import com.bocian.quizzes.model.Quiz;
 import com.bocian.quizzes.repositories.QuizRepository;
 import com.bocian.quizzes.services.api.QuizService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -53,6 +55,17 @@ public class QuizServiceImpl implements QuizService {
             throwQuizNotFound(quizName);
         }
         return quizWithQuestions.get().getQuestions().stream().map(questionMapper::questionToQuestionDTO).collect(Collectors.toSet());
+    }
+
+    @Override
+    @Transactional
+    public QuizDTO createQuiz(final QuizDTO quizDTO) throws InvalidRequestException {
+        Optional<Quiz> existingQuiz = quizRepository.findById(quizDTO.getName());
+        if (existingQuiz.isPresent()) {
+            throw new InvalidRequestException("Quiz with given name already exists");
+        }
+
+        return quizMapper.quizToQuizDTO(quizRepository.save(quizMapper.quizDTOToQuiz(quizDTO)));
     }
 
     private void throwQuizNotFound(final String lookupName) throws DbObjectNotFoundException {

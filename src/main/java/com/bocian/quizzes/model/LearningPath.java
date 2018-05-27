@@ -28,4 +28,10 @@ public class LearningPath {
 
     @OneToMany(mappedBy = Quiz.LEARNING_PATH_FIELD_NAME, fetch = FetchType.LAZY)
     private List<Quiz> quizzes = new ArrayList<>();
+
+    public void addQuiz(final Quiz quiz) {
+        if (!quizzes.contains(quiz)) {
+            quizzes.add(quiz);
+        }
+    }
 }

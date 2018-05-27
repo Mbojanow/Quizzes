@@ -29,7 +29,7 @@ public class Quiz {
     @OneToMany(mappedBy = Question.QUIZ_FIELD_NAME, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Question> questions = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "LEARNING_PATH_NAME", referencedColumnName = LearningPath.LEARNING_PATH_TITLE_COL_NAME)
     private LearningPath learningPath;
 
@@ -73,5 +73,10 @@ public class Quiz {
         if (products == null) {
             products = new ArrayList<>();
         }
+    }
+
+    public void setLearningPath(LearningPath learningPath) {
+        this.learningPath = learningPath;
+        learningPath.addQuiz(this);
     }
 }

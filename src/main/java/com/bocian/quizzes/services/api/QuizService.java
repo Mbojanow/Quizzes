@@ -3,6 +3,7 @@ package com.bocian.quizzes.services.api;
 import com.bocian.quizzes.api.v1.model.QuestionDTO;
 import com.bocian.quizzes.api.v1.model.QuizDTO;
 import com.bocian.quizzes.exceptions.DbObjectNotFoundException;
+import com.bocian.quizzes.exceptions.InvalidRequestException;
 
 import java.util.List;
 import java.util.Set;
@@ -14,4 +15,6 @@ public interface QuizService {
     QuizDTO getQuizByName(String name) throws DbObjectNotFoundException;
 
     Set<QuestionDTO> getQuestionsForQuiz(String quizName) throws DbObjectNotFoundException;
+
+    QuizDTO createQuiz(QuizDTO quizDTO) throws InvalidRequestException;
 }

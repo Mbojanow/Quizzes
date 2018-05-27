@@ -4,10 +4,13 @@ import com.bocian.quizzes.api.v1.model.QuestionSetDTO;
 import com.bocian.quizzes.api.v1.model.QuizDTO;
 import com.bocian.quizzes.api.v1.model.QuizListDTO;
 import com.bocian.quizzes.exceptions.DbObjectNotFoundException;
+import com.bocian.quizzes.exceptions.InvalidRequestException;
 import com.bocian.quizzes.services.api.QuizService;
 import io.swagger.annotations.Api;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 import static com.bocian.quizzes.controllers.v1.QuizController.QUIZZES_BASE_URL;
 
@@ -38,7 +41,14 @@ public class QuizController {
 
     @GetMapping("/{name}/questions")
     @ResponseStatus(HttpStatus.OK)
-    public QuestionSetDTO getQuizsQuestions(@PathVariable("name") final String name) throws DbObjectNotFoundException {
+    public QuestionSetDTO getQuizzesQuestions(@PathVariable("name") final String name)
+            throws DbObjectNotFoundException {
         return new QuestionSetDTO(quizService.getQuestionsForQuiz(name));
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public QuizDTO createQuiz(@Valid @RequestBody final QuizDTO quizDTO) throws InvalidRequestException {
+        return quizService.createQuiz(quizDTO);
     }
 }
