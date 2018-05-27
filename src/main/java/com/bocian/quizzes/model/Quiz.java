@@ -33,7 +33,7 @@ public class Quiz {
     @JoinColumn(name = "LEARNING_PATH_NAME", referencedColumnName = LearningPath.LEARNING_PATH_TITLE_COL_NAME)
     private LearningPath learningPath;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = QUIZZES_TO_PRODUCTS_TABLE_NAME,
             joinColumns = @JoinColumn(name = "QUIZ_NAME", referencedColumnName = QUIZ_NAME_COL_NAME),
             inverseJoinColumns = @JoinColumn(name = "PRODUCT_NAME", referencedColumnName = Product.PRODUCT_NAME_COL_NAME))
