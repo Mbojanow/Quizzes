@@ -26,7 +26,7 @@ public class ProductDTO {
     private String url;
 
     // this one has to be public so that DTOs that have ProductDTO indicated as @Valid can access this method!
-    @AssertTrue(message = "Name and description have to be different")
+    @AssertTrue(message = "Product name and description have to be different")
     public boolean isNameDifferentThanDescription() {
         return !name.equals(description);
     }

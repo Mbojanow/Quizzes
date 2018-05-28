@@ -1,5 +1,6 @@
 package com.bocian.quizzes.api.v1.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ public class QuizDTO {
     private String name;
     
     @Valid
+    @JsonProperty("learning_path")
     private LearningPathDTO learningPath;
 
     @Valid

@@ -15,7 +15,7 @@ public class RestValidationErrorMessageFactory {
                     " This might be a logical error");
         }
 
-        StringBuilder messageBuilder = new StringBuilder();
+        final StringBuilder messageBuilder = new StringBuilder();
         exception.getBindingResult().getAllErrors()
                 .forEach(objectError -> messageBuilder.append(objectError.getDefaultMessage()).append(". "));
         return messageBuilder.toString().trim();

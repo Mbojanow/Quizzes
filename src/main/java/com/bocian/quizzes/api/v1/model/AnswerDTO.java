@@ -18,8 +18,9 @@ public class AnswerDTO {
 
     private Long id;
 
-    @Length(min = MIN_DESCRIPTION_LENGTH, max = Answer.DESCRIPTION_MAX_LENGTH, message = "description cannot be empty")
-    @NotNull(message = "description has to be specified")
+    @Length(min = MIN_DESCRIPTION_LENGTH, max = Answer.DESCRIPTION_MAX_LENGTH,
+            message = "Answer's description cannot be empty")
+    @NotNull(message = "Answer's description has to be specified")
     private String description;
 
     @JsonProperty("is_correct")

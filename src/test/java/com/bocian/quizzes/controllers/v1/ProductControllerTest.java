@@ -128,7 +128,7 @@ public class ProductControllerTest {
                 .andExpect(jsonPath("$.error_message",
                         containsString("Product description too short")))
                 .andExpect(jsonPath("$.error_message",
-                        containsString("Name and description have to be different")));
+                        containsString("name and description have to be different")));
     }
 
     @Test
@@ -158,7 +158,7 @@ public class ProductControllerTest {
                 .andExpect(jsonPath("$.error_message",
                         containsString("Product description too short")))
                 .andExpect(jsonPath("$.error_message",
-                        containsString("Name and description have to be different")));
+                        containsString("name and description have to be different")));
     }
 
     @Test

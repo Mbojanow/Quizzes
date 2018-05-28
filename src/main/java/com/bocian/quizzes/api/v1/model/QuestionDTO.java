@@ -27,12 +27,12 @@ public class QuestionDTO {
 
     private Long id;
 
-    @NotNull(message = "type cannot be null")
+    @NotNull(message = "Question type cannot be null")
     private QuestionType type;
 
     @JsonProperty("duration_in_minutes")
-    @NotNull(message = "duration has to be specified")
-    @Min(value = MIN_DURATION, message = "Duration has to be positive")
+    @NotNull(message = "Quession's duration has to be specified")
+    @Min(value = MIN_DURATION, message = "Question's duration has to be positive")
     private Long durationInMinutes;
 
     @NotNull(message = "Question's difficulty has to be provided")
@@ -42,8 +42,8 @@ public class QuestionDTO {
     @Length(min = MIN_DESCRIPTION_LENGTH, message = "Question length too short! It has to be at least 10 characters long")
     private String description;
 
-    @NotNull(message = "tag has to be specified")
-    @Length(min = MIN_TAG_LENGTH, message = "Tag has to be at least 2 character long")
+    @NotNull(message = "Question tag has to be specified")
+    @Length(min = MIN_TAG_LENGTH, message = "Question tag has to be at least 2 character long")
     private String tag;
 
     @JsonProperty("possible_answers")

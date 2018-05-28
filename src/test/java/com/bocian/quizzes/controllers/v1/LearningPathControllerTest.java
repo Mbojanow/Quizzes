@@ -80,7 +80,7 @@ public class LearningPathControllerTest {
         mockMvc.perform(post(LearningPathController.LEARNING_PATH_BASE_URL).contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(learningPathDTO)).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error_message", containsString("Title too short")));
+                .andExpect(jsonPath("$.error_message", containsString("title too short")));
     }
 
     @Test

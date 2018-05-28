@@ -24,7 +24,7 @@ public class ArgsDebugAspect {
     @Before("onAnyPublicMethodWithArgs()")
     public void logInputArgs(final JoinPoint joinPoint) {
         if (argsDebuggingEnabled && joinPoint.getArgs().length > 0) {
-            log.info("Arguments of " + joinPoint.getSignature() + "\n" + Arrays.toString(joinPoint.getArgs()));
+            log.info("Arguments of " + joinPoint.getSignature() + ":\n" + Arrays.toString(joinPoint.getArgs()));
         }
     }
 }

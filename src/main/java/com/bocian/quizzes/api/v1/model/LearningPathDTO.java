@@ -13,6 +13,6 @@ import javax.validation.constraints.NotNull;
 public class LearningPathDTO {
 
     @NotNull
-    @Length(min = 3, message = "Title too short")
+    @Length(min = 3, message = "Learning path's title too short")
     private String title;
 }

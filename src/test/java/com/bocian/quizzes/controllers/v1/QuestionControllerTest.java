@@ -100,11 +100,11 @@ public class QuestionControllerTest {
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.error_message",
-                        containsString("Duration has to be positive")))
+                        containsString("duration has to be positive")))
                 .andExpect(jsonPath("$.error_message",
                         containsString("Question length too short")))
                 .andExpect(jsonPath("$.error_message",
-                        containsString("Tag has to be at least 2 character long")))
+                        containsString("tag has to be at least 2 character long")))
                 .andExpect(jsonPath("$.error_message",
                         containsString("Question's difficulty has to be provided")))
                 .andExpect(jsonPath("$.error_message",
